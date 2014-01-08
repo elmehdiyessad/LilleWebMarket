@@ -1,0 +1,375 @@
+/* ==========================================================================
+   Base styles
+   ========================================================================== */
+
+html {
+    color: #222;
+    background: #EEE;
+}
+
+html {
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+body {
+    font-size: 16px;
+}
+
+::-moz-selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+::selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+audio,
+canvas,
+img,
+svg,
+video {
+    vertical-align: middle;
+}
+
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+h1,
+h2,
+h3 {
+    color: #2c3e50;
+    font-weight: normal;
+}
+
+a {
+    color: #2980b9;
+    text-decoration: none;
+}
+a:hover,
+a:focus {
+    text-decoration: underline;
+}
+
+.wrapper {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+
+#header {
+    height: 120px;
+    background: #2980b9;
+    background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, .1), transparent);
+    box-shadow: rgba(0, 0, 0, .7) 0 0 13px;
+    border-bottom: 1px solid rgba(255, 255, 255, .5);
+}
+#header h1 {
+    margin: 0;
+    color: #EEE;
+    line-height: 120px;
+    float: left;
+}
+#header .logbox {
+    position: relative;
+    margin-top: 20px;
+    float: right;
+    width: 300px;
+    height: 80px;
+    background: rgba(0, 0, 0, .1);
+    border-radius: 0 0 35px;
+    color: #FFF;
+}
+
+
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    border: 2px solid rgba(255, 255, 255, .8);
+}
+.logbox .avatar {
+    float: right;
+    margin: 8px 8px 0 0;
+}
+.logbox .infos {
+    float: left;
+    margin: 10px 0 0 15px;
+    color: #EEE;
+    width: calc(100% - 100px);
+}
+.logbox .pseudo {
+    display: block;
+    font-weight: bold;
+}
+.logbox .pseudo:after {
+    content: " ";
+    display: block;
+    width: 107%;
+    height: 2px;
+    background: rgba(255, 255, 255, .8);
+}
+.logbox .cash {
+    position: absolute;
+    top: 10px;
+    right: 83px;
+    font-size: 14px;
+    text-align: right;
+    width: 120px;
+}
+.logbox .def,
+.logbox .value {
+    display: inline-block;
+}
+.logbox .def {
+    width: 63%;
+    text-align: right;
+    padding-right: 5px;
+}
+.logbox .value {
+    
+}
+.logbox ul {
+    margin: 5px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    color: rgba(255, 255, 255, .8);
+    text-shadow: rgba(0, 0, 0, .3) 0 0 3px;
+}
+.logbox ul li {
+    float: left;
+    width: 50%;
+}
+
+
+
+
+
+.actions {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    float: right;
+    margin-top: -50px;
+}
+.actions li {
+    float: left;
+    margin-left: 5px;
+}
+.actions a {
+    display: block;
+    padding: 3px 10px;
+    color: #EEE;
+    background: rgba(0, 0, 0, .5);
+    transition: background .15s;
+}
+.actions a:hover,
+.actions a:focus {
+    text-decoration: none;
+    background: rgba(0, 0, 0, .7);
+}
+
+
+
+table {
+    width: 100%;
+    border: 1px solid #95a5a6;
+}
+table thead,
+table tfoot {
+    background: #bdc3c7;
+    color: #2c3e50;
+}
+table th {
+    font-weight: normal;
+}
+table tr {
+    height: 30px;
+}
+table tr:not(:last-child) {
+    border-bottom: 1px solid #CCC;
+}
+table td {
+    padding: 0 10px;
+}
+table td.center {
+    text-align: center;
+}
+
+.positive {
+    color: #27ae60;
+}
+.negative {
+    color: #c0392b;
+}
+
+
+
+footer {
+    margin-top: 50px;
+    border-top: 1px solid #777;
+    text-align: center;
+    color: #777;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+
+.hidden {
+    display: none !important;
+    visibility: hidden;
+}
+
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+
+
+/* ==========================================================================
+   Responsive Design.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+    /* Style adjustments for viewports that meet the condition */
+}
+
+@media print,
+       (-o-min-device-pixel-ratio: 5/4),
+       (-webkit-min-device-pixel-ratio: 1.25),
+       (min-resolution: 120dpi) {
+    /* Style adjustments for high resolution devices */
+}
+
+
+
+/* ==========================================================================
+   Print styles.
+   ========================================================================== */
+
+@media print {
+    * {
+        background: transparent !important;
+        color: #000 !important; /* Black prints faster: h5bp.com/s */
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    a[href^="javascript:"]:after,
+    a[href^="#"]:after {
+        content: "";
+    }
+
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}
