@@ -12,7 +12,7 @@
         username="demodea"
         password="moi"
         driverClassName="org.postgresql.Driver"
-        url="jdbc:postgresql://sqlserv:5432/da2i"
+        url="jdbc:postgresql://localhost:5432/demodea"
     />
 
 

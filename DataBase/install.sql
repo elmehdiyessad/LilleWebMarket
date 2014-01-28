@@ -11,6 +11,16 @@
 
 
 
+-------------------------------------------------
+--- Purge la base de données
+-------------------------------------------------
+DROP TABLE lwm_variations_marche;
+DROP TABLE lwm_utilisateur_titre;
+DROP TABLE lwm_utilisateur_achat;
+DROP TABLE lwm_marche;
+DROP TABLE lwm_utilisateur_infos;
+DROP TABLE lwm_utilisateur;
+
 
 
 -------------------------------------------------
@@ -18,12 +28,9 @@
 -------------------------------------------------
 CREATE TABLE lwm_utilisateur (
     login       VARCHAR(30) PRIMARY KEY,
-    mdp         VARCHAR(30) NOT NULL,
+    mdp         VARCHAR(32) NOT NULL,
     nom         VARCHAR(75) NOT NULL,
-    prenom      VARCHAR(75) NOT NULL,
-
-    CONSTRAINT pk_lwm_utilisateur
-        PRIMARY KEY login
+    prenom      VARCHAR(75) NOT NULL
 );
 
 
@@ -32,71 +39,10 @@ CREATE TABLE lwm_utilisateur (
 --- Crée la table des informations sur les utilisateurs
 -------------------------------------------------
 CREATE TABLE lwm_utilisateur_infos (
-    login       VARCHAR(30) PRIMARY KEY,
+    login       VARCHAR(30) PRIMARY KEY
+                            REFERENCES  lwm_utilisateur(login)   ON DELETE CASCADE   ON UPDATE CASCADE,
     role        VARCHAR(30) NOT NULL,
-    cash        INTEGER     NOT NULL    DEFAULT 10000,
-
-    CONSTRAINT pk_lwm_utilisateur_infos
-        PRIMARY KEY login,
-
-    FOREIGN KEY login
-        REFERENCES lwm_utilisateur(login)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
-
-
-
--------------------------------------------------
---- Crée la table des achats en cours des utilisateurs
--------------------------------------------------
-CREATE TABLE lwm_utilisateur_achat (
-    login       INTEGER     NOT NULL,
-    id_marche   INTEGER     NOT NULL,
-    nb_titres   INTEGER     NOT NULL    CHECK (nb_titres > 0),
-    prix        INTEGER     NOT NULL,
-    affirmation BOOLEAN     NOT NULL    DEFAULT TRUE,
-    dateachat   TIMESPTAMP  NOT NULL    DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY (login, id_marche, dateachat),
-
-    FOREIGN KEY login
-        REFERENCES lwm_utilisateur(login)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-
-    FOREIGN KEY id_marche
-        REFERENCES lwm_marche(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
-);
-
-
-
--------------------------------------------------
---- Crée la table des titres des utilisateurs
--------------------------------------------------
-CREATE TABLE lwm_utilisateur_titre (
-    id          SERIAL,
-    login       INTEGER     NOT NULL,
-    id_marche   INTEGER     NOT NULL,
-    nb_titres   INTEGER     NOT NULL CHECK (nb_titres > 0),
-    prix        INTEGER     NOT NULL,
-
-    CONSTRAINT pk_lwm_utilisateur_titre
-        PRIMARY KEY id,
-
-    CONSTRAINT fk_lwm_utilisateur
-        FOREIGN KEY login
-        REFERENCES lwm_utilisateur(login)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE,
-
-    CONSTRAINT fk_lwm_marche
-        FOREIGN KEY id_marche
-        REFERENCES lwm_marche(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+    cash        INTEGER     NOT NULL    DEFAULT 10000
 );
 
 
@@ -105,19 +51,39 @@ CREATE TABLE lwm_utilisateur_titre (
 --- Crée la table des marchés
 -------------------------------------------------
 CREATE TABLE lwm_marche (
-    id          SERIAL,
+    id          SERIAL      PRIMARY KEY,
     titre       VARCHAR(255)NOT NULL,
     titre_inv   VARCHAR(255)NOT NULL,
-    echeance    TIMESPTAMP  NOT NULL,
-    principal   BOOLEAN     NOT NULL    DEFAULT TRUE,
+    echeance    TIMESTAMP   NOT NULL
+);
 
-    CONSTRAINT pk_lwm_marche
-        PRIMARY KEY id,
 
-    FOREIGN KEY id_inverse
-        REFERENCES lwm_marche(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+
+-------------------------------------------------
+--- Crée la table des achats en cours des utilisateurs
+-------------------------------------------------
+CREATE TABLE lwm_utilisateur_achat (
+    login       VARCHAR(30) REFERENCES  lwm_utilisateur(login)   ON DELETE CASCADE   ON UPDATE CASCADE,
+    id_marche   INTEGER     REFERENCES  lwm_marche(id)           ON DELETE CASCADE   ON UPDATE CASCADE,
+    nb_titres   INTEGER     NOT NULL    CHECK (nb_titres > 0),
+    prix        INTEGER     NOT NULL,
+    affirmation BOOLEAN     NOT NULL    DEFAULT TRUE,
+    dateachat   TIMESTAMP   NOT NULL    DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (login, id_marche, dateachat)
+);
+
+
+
+-------------------------------------------------
+--- Crée la table des titres des utilisateurs
+-------------------------------------------------
+CREATE TABLE lwm_utilisateur_titre (
+    id          SERIAL      PRIMARY KEY,
+    login       VARCHAR(30) REFERENCES  lwm_utilisateur(login)   ON DELETE CASCADE   ON UPDATE CASCADE,
+    id_marche   INTEGER     REFERENCES  lwm_marche(id)           ON DELETE CASCADE   ON UPDATE CASCADE,
+    nb_titres   INTEGER     NOT NULL    CHECK (nb_titres > 0),
+    prix        INTEGER     NOT NULL
 );
 
 
@@ -126,14 +92,9 @@ CREATE TABLE lwm_marche (
 --- Crée la table des variations d'un marché
 -------------------------------------------------
 CREATE TABLE lwm_variations_marche (
-    id_marche   INTEGER     NOT NULL,
-    instant     TIMESPTAMP  NOT NULL,
+    id_marche   INTEGER     REFERENCES  lwm_marche(id)           ON DELETE CASCADE   ON UPDATE CASCADE,
+    instant     TIMESTAMP   NOT NULL,
     valeur      INTEGER     NOT NULL,
 
-    PRIMARY KEY (id_marche, instant),
-
-    FOREIGN KEY id_marche
-        REFERENCES lwm_marche(id)
-        ON DELETE CASCADE
-        ON UPDATE CASCADE
+    PRIMARY KEY (id_marche, instant)
 );
