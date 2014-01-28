@@ -26,4 +26,18 @@
   <description>
     Bourse d'informations
   </description>
+
+
+
+  <persistence-context-ref>
+    <persistence-context-ref-name>persistence/em</persistence-context-ref-name>
+    <persistence-unit-name>statCreateTablesJTA</persistence-unit-name>
+  </persistence-context-ref>
+
+  <resource-ref>
+    <description>DB Connection</description>
+    <res-ref-name>ds/OracleDS</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
 </web-app>
