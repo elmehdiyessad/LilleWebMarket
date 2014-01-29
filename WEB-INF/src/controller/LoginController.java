@@ -1,23 +1,21 @@
 package src.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import framework.Controller;
 
 
-public class LoginController extends HttpServlet
+
+public class LoginController extends Controller
 {
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void indexAction(HttpServletRequest request, HttpServletResponse response)
     {
+    	if(request.getUserPrincipal() != null)
+    		redirect(response, request.getContextPath());
         if(request.getDispatcherType() == javax.servlet.DispatcherType.FORWARD)
-            response.sendRedirect(response.encodeURL("login"));
+            redirect(response, request.getContextPath() + "/login");
         else
-            getServletContext().getRequestDispatcher("/WEB-INF/src/resources/views/login/login.jsp")
-                               .forward(request, response);
+        	render("login:login", request, response);
     }
 }

@@ -12,7 +12,7 @@
         username="demodea"
         password="moi"
         driverClassName="org.postgresql.Driver"
-        url="jdbc:postgresql:demodea"
+        url="jdbc:postgresql://sqlserv/da2i"
     />
 
 
@@ -23,6 +23,8 @@
 
         localDataSource="true"
         dataSourceName="database"
+
+        digest="md5"
 
         userTable="lwm_utilisateur"
         userNameCol="login"

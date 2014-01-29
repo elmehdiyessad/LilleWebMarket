@@ -16,44 +16,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import framework.Controller;
 
 
-public class TestController extends HttpServlet
+
+public class TestController extends Controller
 {
-    private DataSource dataSource;
-    private Connection connection;
-    private Statement statement;
     ResultSet resultSet = null;
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    public void indexAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         PrintWriter out = response.getWriter();
-        try {
-            try {
-                Context initContext  = new InitialContext();
-                Context envContext  = (Context)initContext.lookup("java:/comp/env");
-                dataSource = (DataSource) envContext.lookup("database");
-                out.println("Good...");
-            } catch(NamingException ex){
-                out.println("NamingException");
-                out.println(ex.getMessage());
-            }
+        out.println(request.getContextPath());
+        out.println(request.getServletPath());
 
-            connection = dataSource.getConnection();
-            statement = connection.createStatement();
-            String query = "SELECT * FROM lwm_utilisateur";
-            resultSet = statement.executeQuery(query);
+        try {
+            resultSet = executeQuery("SELECT * FROM lwm_utilisateur");
             while (resultSet.next())
-                System.out.println(resultSet.getString(1) + resultSet.getString(2) + resultSet.getString(3) + resultSet.getString(4));
+                out.println(resultSet.getString(1) + resultSet.getString(2) + resultSet.getString(3) + resultSet.getString(4));
 
             out.println("All it's ok ?");
-
-            connection.close();
         } catch(SQLException e){
             out.println("SQLException");
             out.println(e.getMessage());
         }
 
         out.println("OKOK");
+    }
+
+    public void totoAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    {
+        PrintWriter out = response.getWriter();
+        out.println("TOOTOOO");
     }
 }
