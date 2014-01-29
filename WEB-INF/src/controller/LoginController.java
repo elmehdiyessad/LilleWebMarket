@@ -14,18 +14,10 @@ public class LoginController extends HttpServlet
 {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<meta charset=\"utf-8\" />");
-        out.println("<title>Test</title>");
-        out.println("</head>");
-        out.println("<body>");
-        out.println("<p>Ceci est une page générée depuis une servlet.</p>");
-        out.println("</body>");
-        out.println("</html>");
+        if(request.getDispatcherType() == javax.servlet.DispatcherType.FORWARD)
+            response.sendRedirect("/LilleWebMarket/login");
+        else
+            getServletContext().getRequestDispatcher("/WEB-INF/src/resources/views/login/login.jsp")
+                               .forward(request, response);
     }
 }
