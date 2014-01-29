@@ -42,7 +42,7 @@ CREATE TABLE lwm_utilisateur_infos (
     login       VARCHAR(30) PRIMARY KEY
                             REFERENCES  lwm_utilisateur(login)   ON DELETE CASCADE   ON UPDATE CASCADE,
     role        VARCHAR(30) NOT NULL,
-    cash        INTEGER     NOT NULL    DEFAULT 10000
+    cash        INTEGER     NOT NULL    DEFAULT 10000    CHECK (cash > 0)
 );
 
 
@@ -66,7 +66,7 @@ CREATE TABLE lwm_utilisateur_achat (
     login       VARCHAR(30) REFERENCES  lwm_utilisateur(login)   ON DELETE CASCADE   ON UPDATE CASCADE,
     id_marche   INTEGER     REFERENCES  lwm_marche(id)           ON DELETE CASCADE   ON UPDATE CASCADE,
     nb_titres   INTEGER     NOT NULL    CHECK (nb_titres > 0),
-    prix        INTEGER     NOT NULL,
+    prix        INTEGER     NOT NULL    CHECK (prix > 0),
     affirmation BOOLEAN     NOT NULL    DEFAULT TRUE,
     dateachat   TIMESTAMP   NOT NULL    DEFAULT CURRENT_TIMESTAMP,
 
@@ -83,7 +83,7 @@ CREATE TABLE lwm_utilisateur_titre (
     login       VARCHAR(30) REFERENCES  lwm_utilisateur(login)   ON DELETE CASCADE   ON UPDATE CASCADE,
     id_marche   INTEGER     REFERENCES  lwm_marche(id)           ON DELETE CASCADE   ON UPDATE CASCADE,
     nb_titres   INTEGER     NOT NULL    CHECK (nb_titres > 0),
-    prix        INTEGER     NOT NULL
+    prix        INTEGER     NOT NULL    CHECK (prix > 0)
 );
 
 
