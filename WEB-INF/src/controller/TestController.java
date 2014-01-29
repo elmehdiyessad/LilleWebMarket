@@ -4,6 +4,7 @@ package src.controller;
 import java.io.IOException;
 import java.sql.Connection;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
@@ -19,6 +20,8 @@ import javax.sql.DataSource;
 
 import framework.Controller;
 
+import src.entity.Utilisateur;
+
 
 
 public class TestController extends Controller
@@ -28,21 +31,22 @@ public class TestController extends Controller
     public void indexAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         PrintWriter out = response.getWriter();
-        out.println(request.getContextPath());
-        out.println(request.getServletPath());
+
+        resultSet = executeQuery("SELECT * FROM lwm_utilisateur");
 
         try {
-            resultSet = executeQuery("SELECT * FROM lwm_utilisateur");
-            while (resultSet.next())
-                out.println(resultSet.getString(1) + resultSet.getString(2) + resultSet.getString(3) + resultSet.getString(4));
+            while (resultSet.next()){
+                Utilisateur u = new Utilisateur();
+                u.hydrate(resultSet, out);
+                out.println(u);
+            }
+        } catch(Exception e){
+            StringWriter errors = new StringWriter();
+            e.printStackTrace(new PrintWriter(errors));
 
-            out.println("All it's ok ?");
-        } catch(SQLException e){
-            out.println("SQLException");
-            out.println(e.getMessage());
+            out.println("Hydrate fail");
+            out.println(errors.toString());
         }
-
-        out.println("OKOK");
     }
 
     public void totoAction(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException

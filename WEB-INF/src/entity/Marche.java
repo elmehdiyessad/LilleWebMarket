@@ -20,18 +20,6 @@ public class Marche extends Entity
 
 
 
-    public String[] getFields()
-    {
-        return {
-            'id',
-            'titre',
-            'titreInv',
-            'echeance'
-        };
-    }
-
-
-
     public int getId() {
         return this.id;
     }

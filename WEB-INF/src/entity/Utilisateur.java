@@ -19,19 +19,6 @@ public class Utilisateur extends Entity
 
 
 
-    public String[] getFields()
-    {
-        return {
-            'login',
-            'mdp',
-            'nom',
-            'prenom',
-            'cash'
-        };
-    }
-
-
-
     public String getLogin()
     {
         return this.login;
