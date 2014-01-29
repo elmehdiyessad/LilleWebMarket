@@ -3,7 +3,7 @@
 
     <!-- Pool de connexion -->
     <Resource
-        name="jdbc/postgres"
+        name="database"
         auth="Container"
         type="javax.sql.DataSource"
         maxActive="8"
@@ -13,6 +13,20 @@
         password="moi"
         driverClassName="org.postgresql.Driver"
         url="jdbc:postgresql://localhost:5432/demodea"
+    />
+
+
+    <!-- Realm des utilisateurs -->
+    <Realm
+        className="org.apache.catalina.realm.DataSourceRealm"
+        debug="99"
+        dataSourceName="database"
+        localDataSource="false"
+        userTable="lwm_utilisateur"
+        userNameCol="login"
+        userCredCol="mdp"
+        userRoleTable="lwm_utilisateur_infos"
+        roleNameCol="role"
     />
 
 
