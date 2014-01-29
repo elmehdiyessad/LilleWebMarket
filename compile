@@ -1,0 +1,3 @@
+#!/bin/bash
+
+javac WEB-INF/**/**/*.java -cp $CLASSPATH -d WEB-INF/classes/

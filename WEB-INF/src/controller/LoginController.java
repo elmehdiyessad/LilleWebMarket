@@ -15,7 +15,7 @@ public class LoginController extends HttpServlet
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         if(request.getDispatcherType() == javax.servlet.DispatcherType.FORWARD)
-            response.sendRedirect("/LilleWebMarket/login");
+            response.sendRedirect(response.encodeURL("login"));
         else
             getServletContext().getRequestDispatcher("/WEB-INF/src/resources/views/login/login.jsp")
                                .forward(request, response);

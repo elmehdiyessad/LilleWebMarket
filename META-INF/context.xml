@@ -1,4 +1,4 @@
-<Context path="/LilleWebMarket" docBase="LilleWebMarket" debug="99">
+<Context path="/LilleWebMarket" docBase="LilleWebMarket">
 
 
     <!-- Pool de connexion -->
@@ -12,19 +12,22 @@
         username="demodea"
         password="moi"
         driverClassName="org.postgresql.Driver"
-        url="jdbc:postgresql://localhost:5432/demodea"
+        url="jdbc:postgresql:demodea"
     />
 
 
     <!-- Realm des utilisateurs -->
     <Realm
         className="org.apache.catalina.realm.DataSourceRealm"
-        debug="99"
+        name="realm-database"
+
+        localDataSource="true"
         dataSourceName="database"
-        localDataSource="false"
+
         userTable="lwm_utilisateur"
         userNameCol="login"
         userCredCol="mdp"
+
         userRoleTable="lwm_utilisateur_infos"
         roleNameCol="role"
     />
