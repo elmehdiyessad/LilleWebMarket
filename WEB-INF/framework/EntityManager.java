@@ -16,12 +16,13 @@ public class EntityManager
 
 
 
-    private EntityManager(Connection connection)
-    {
+    private EntityManager(){}
+
+
+
+    public void setConnection(Connection connection) {
         this.connection = connection;
     }
-
-
 
     public Repository getRepository(String repositoryName) throws Exception
     {
@@ -39,10 +40,12 @@ public class EntityManager
         if(EntityManager.manager == null) {
             synchronized(EntityManager.class) {
                 if(EntityManager.manager == null) {
-                    EntityManager.manager = new EntityManager(connection);
+                    EntityManager.manager = new EntityManager();
                 }
             }
         }
+
+        EntityManager.manager.setConnection(connection);
 
         return EntityManager.manager;
     }

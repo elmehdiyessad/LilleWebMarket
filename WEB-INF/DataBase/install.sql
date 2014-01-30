@@ -21,16 +21,22 @@ DROP TABLE lwm_marche;
 DROP TABLE lwm_utilisateur_infos;
 DROP TABLE lwm_utilisateur;
 
+DROP TABLE lwm_variations_market;
+DROP TABLE lwm_user_stock;
+DROP TABLE lwm_market;
+DROP TABLE lwm_user_infos;
+DROP TABLE lwm_user;
+
 
 
 -------------------------------------------------
 --- Crée la table des utilisateurs
 -------------------------------------------------
-CREATE TABLE lwm_utilisateur (
-    login       VARCHAR(30) PRIMARY KEY,
-    mdp         VARCHAR(32) NOT NULL,
-    nom         VARCHAR(75) NOT NULL,
-    prenom      VARCHAR(75) NOT NULL
+CREATE TABLE lwm_user (
+    login       TEXT        PRIMARY KEY,
+    password    TEXT        NOT NULL,
+    first_name  TEXT        NOT NULL,
+    last_name   TEXT        NOT NULL
 );
 
 
@@ -38,11 +44,11 @@ CREATE TABLE lwm_utilisateur (
 -------------------------------------------------
 --- Crée la table des informations sur les utilisateurs
 -------------------------------------------------
-CREATE TABLE lwm_utilisateur_infos (
-    login       VARCHAR(30) PRIMARY KEY
-                            REFERENCES  lwm_utilisateur(login)   ON DELETE CASCADE   ON UPDATE CASCADE,
-    role        VARCHAR(30) NOT NULL,
-    cash        INTEGER     NOT NULL    DEFAULT 10000    CHECK (cash > 0)
+CREATE TABLE lwm_user_infos (
+    login       TEXT        PRIMARY KEY
+                            REFERENCES  lwm_user(login) ON DELETE CASCADE  ON UPDATE CASCADE,
+    role        TEXT        NOT NULL,
+    cash        INTEGER     NOT NULL    DEFAULT 10000   CHECK (cash > 0)
 );
 
 
@@ -50,11 +56,11 @@ CREATE TABLE lwm_utilisateur_infos (
 -------------------------------------------------
 --- Crée la table des marchés
 -------------------------------------------------
-CREATE TABLE lwm_marche (
+CREATE TABLE lwm_market (
     id          SERIAL      PRIMARY KEY,
-    titre       VARCHAR(255)NOT NULL,
-    titre_inv   VARCHAR(255)NOT NULL,
-    echeance    TIMESTAMP   NOT NULL
+    title       TEXT        NOT NULL,
+    title_rev   TEXT        NOT NULL,
+    term        TIMESTAMP   NOT NULL
 );
 
 
@@ -62,19 +68,19 @@ CREATE TABLE lwm_marche (
 -------------------------------------------------
 --- Crée la table des achats en cours des utilisateurs
 -------------------------------------------------
-CREATE TYPE ETAT AS ENUM ('ACHAT', 'VENTE');
-CREATE TABLE lwm_utilisateur_achat (
-    login       VARCHAR(30) REFERENCES  lwm_utilisateur(login)   ON DELETE CASCADE   ON UPDATE CASCADE,
-    id_marche   INTEGER     REFERENCES  lwm_marche(id)           ON DELETE CASCADE   ON UPDATE CASCADE,
-    nb_titres   INTEGER     NOT NULL    CHECK (nb_titres > 0),
-    nb_titres_restants
-                INTEGER     NOT NULL    CHECK (nb_titres > 0),
-    prix        INTEGER     NOT NULL    CHECK (prix > 0),
-    affirmation BOOLEAN     NOT NULL    DEFAULT TRUE,
-    dateachat   TIMESTAMP   NOT NULL    DEFAULT CURRENT_TIMESTAMP,
-    achat_vente BOOLEAN     NOT NULL    DEFAULT TRUE,
+CREATE TYPE ETAT AS ENUM ('BUY', 'SELL');
+CREATE TABLE lwm_user_stock (
+    login       TEXT        REFERENCES  lwm_user(login) ON DELETE CASCADE  ON UPDATE CASCADE,
+    id_market   INTEGER     REFERENCES  lwm_market(id)  ON DELETE CASCADE  ON UPDATE CASCADE,
+    nb_stock    INTEGER     NOT NULL    CHECK (nb_stock > 0),
+    nb_stock_remaining
+                INTEGER     NOT NULL    CHECK (nb_stock_remaining > 0),
+    price       INTEGER     NOT NULL    CHECK (price > 0),
+    assertion   BOOLEAN     NOT NULL    DEFAULT TRUE,
+    date_buy    TIMESTAMP   NOT NULL    DEFAULT CURRENT_TIMESTAMP,
+    buy_sell    ETAT        NOT NULL    DEFAULT 'BUY',
 
-    PRIMARY KEY (login, id_marche, dateachat)
+    PRIMARY KEY (login, id_market, date_buy)
 );
 
 
@@ -82,10 +88,10 @@ CREATE TABLE lwm_utilisateur_achat (
 -------------------------------------------------
 --- Crée la table des variations d'un marché
 -------------------------------------------------
-CREATE TABLE lwm_variations_marche (
-    id_marche   INTEGER     REFERENCES  lwm_marche(id)           ON DELETE CASCADE   ON UPDATE CASCADE,
+CREATE TABLE lwm_variations_market (
+    id_market   INTEGER     REFERENCES  lwm_market(id)   ON DELETE CASCADE  ON UPDATE CASCADE,
     instant     TIMESTAMP   NOT NULL,
-    valeur      INTEGER     NOT NULL,
+    value       INTEGER     NOT NULL,
 
-    PRIMARY KEY (id_marche, instant)
+    PRIMARY KEY (id_market, instant)
 );

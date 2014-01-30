@@ -8,7 +8,7 @@ import framework.Repository;
 
 
 
-public class UtilisateurRepository extends Repository<Utilisateur>
+public class UserRepository extends Repository<User>
 {
-    public UtilisateurRepository(){}
+    public UserRepository(){}
 }

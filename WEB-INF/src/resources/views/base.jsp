@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8" %>
 
-<jsp:useBean id="user" scope="request" class="src.entity.Utilisateur"/>
+<jsp:useBean id="user" scope="request" class="src.entity.User"/>
 
 <html>
 <head>
@@ -14,12 +14,14 @@
 	<div id="page">
 		<header id="header">
 			<div class="wrapper">
-				<h1>LilleWebMarket</h1>
+				<h1>
+					<a href="<%= request.getContextPath() %>">LilleWebMarket</a>
+				</h1>
 				<div class="logbox">
-					<% if(request.getAttribute("user") != null) { %>
+					<% if(request.getUserPrincipal() != null) { %>
 						<img src="http://lorempicsum.com/futurama/60/60/6" class="avatar">
 						<div class="infos">
-							<span class="pseudo">${user.prenom}</span>
+							<span class="pseudo">${user.firstName}</span>
 							<div class="cash">
 								<span class="def">Cash</span>
 								<span class="value">???</span>
@@ -44,6 +46,8 @@
 								</li>
 							</ul>
 						</div>
+					<% } else { %>
+						<a href="<%= request.getContextPath() %>/security/login" class="login">Connexion</a>
 					<% } %>
 				</div>
 			</div>

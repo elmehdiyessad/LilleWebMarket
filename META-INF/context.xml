@@ -12,7 +12,7 @@
         username="demodea"
         password="moi"
         driverClassName="org.postgresql.Driver"
-        url="jdbc:postgresql://sqlserv/da2i"
+        url="jdbc:postgresql:demodea"
     />
 
 
@@ -26,11 +26,11 @@
 
         digest="md5"
 
-        userTable="lwm_utilisateur"
+        userTable="lwm_user"
         userNameCol="login"
-        userCredCol="mdp"
+        userCredCol="password"
 
-        userRoleTable="lwm_utilisateur_infos"
+        userRoleTable="lwm_user_infos"
         roleNameCol="role"
     />
 

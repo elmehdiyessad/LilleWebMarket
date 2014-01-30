@@ -94,6 +94,10 @@ a:focus {
     line-height: 120px;
     float: left;
 }
+#header h1 a {
+    color: #EEE;
+    text-decoration: none;
+}
 #header .logbox {
     position: relative;
     margin-top: 20px;
@@ -115,6 +119,15 @@ a:focus {
 .logbox .avatar {
     float: right;
     margin: 8px 8px 0 0;
+}
+.logbox .login {
+    text-decoration: none;
+    color: #EEE;
+    display: block;
+    width: 50%;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 28px;
 }
 .logbox .infos {
     float: left;
@@ -151,7 +164,7 @@ a:focus {
     padding-right: 5px;
 }
 .logbox .value {
-    
+
 }
 .logbox ul {
     margin: 5px 0 0;

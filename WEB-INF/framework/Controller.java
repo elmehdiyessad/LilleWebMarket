@@ -22,10 +22,6 @@ import javax.sql.DataSource;
 
 public abstract class Controller extends HttpServlet
 {
-    private Connection connection = null;
-
-
-
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         PrintWriter out = response.getWriter();
@@ -34,7 +30,7 @@ public abstract class Controller extends HttpServlet
             if(request.getUserPrincipal() != null)
                 request.setAttribute(
                     "user",
-                    getManager().getRepository("Utilisateur").findOneBy("login", request.getUserPrincipal().getName())
+                    getManager(request).getRepository("User").findOneBy("login", request.getUserPrincipal().getName())
                 );
 
             String[] path = request.getServletPath().split("/");
@@ -47,6 +43,10 @@ public abstract class Controller extends HttpServlet
 
             Method method = this.getClass().getMethod(action + "Action", HttpServletRequest.class, HttpServletResponse.class);
             method.invoke(this, request, response);
+
+            try {
+                ((Connection) request.getAttribute("connection")).close();
+            } catch(Exception e){}
         } catch(Exception e){
             debug(e, response);
         }
@@ -85,26 +85,23 @@ public abstract class Controller extends HttpServlet
         return (DataSource) envContext.lookup("database");
     }
 
-    protected Connection getConnection() throws Exception
+
+
+    protected EntityManager getManager(HttpServletRequest request) throws Exception
     {
-        if(connection != null && !connection.isClosed())
-            return connection;
+        Connection connection = (Connection) request.getAttribute("connection");
+        if(connection == null || connection.isClosed()) {
+            connection = getDataSource().getConnection();
+            request.setAttribute("connection", connection);
+        }
 
-        connection = getDataSource().getConnection();
-
-        return connection;
+        return EntityManager.getInstance(connection);
     }
 
 
 
-    protected EntityManager getManager() throws Exception
+    protected void debug(Exception e, HttpServletResponse response)
     {
-        return EntityManager.getInstance(getConnection());
-    }
-
-
-
-    protected void debug(Exception e, HttpServletResponse response){
         try {
             StringWriter errors = new StringWriter();
             e.printStackTrace(new PrintWriter(errors));

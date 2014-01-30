@@ -5,15 +5,15 @@
 
 <form action="<%= response.encodeURL("j_security_check") %>" method="post">
     <p>
-        <label for="name">Nom d'utilisateur</label>
-        <input type="text" name="j_username">
+        <label for="login">Nom d'utilisateur</label>
+        <input type="text" name="j_username" id="login">
     </p>
     <p>
-        <label for="e-mail">Mot de passe</label>
-        <input type="password" name="j_password">
+        <label for="password">Mot de passe</label>
+        <input type="password" name="j_password" id="password">
     </p>
 
     <p class="submit">
-        <input type="submit" value="Submit">
+        <input type="submit" value="Connexion">
     </p>
 </form>

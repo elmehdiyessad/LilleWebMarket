@@ -21,7 +21,12 @@ public class SecurityController extends Controller
         	render("security:login", request, response);
     }
 
-    public void logoutAction(HttpServletRequest request, HttpServletResponse response) throws ServletException
+    public void loginAction(HttpServletRequest request, HttpServletResponse response)
+    {
+        redirect(response, request.getContextPath());
+    }
+
+    public void logoutAction(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         request.logout();
         redirect(response, request.getContextPath());

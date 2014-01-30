@@ -15,7 +15,7 @@ public abstract class Entity
 
         for(Method method : methods) {
             if(method.getName().substring(0, 3).equals("set")){
-                fieldName = method.getName().substring(3).replace("(.)([A-Z])", "$1_$2").toLowerCase();
+                fieldName = method.getName().substring(3).replaceAll("(.)([A-Z])", "$1_$2").toLowerCase();
                 try {
                     method.invoke(this, rs.getObject(fieldName));
                 } catch(Exception e){}

@@ -1,4 +1,4 @@
-<%@ page import="src.entity.Marche" %>
+<%@ page import="src.entity.Market" %>
 <%@ page import="java.util.ArrayList" %>
 
 <%@ page contentType="text/html; charset=UTF-8" %>
@@ -7,8 +7,8 @@
 <h2>Accueil</h2>
 
 <ul class="actions">
-    <li><a href="#">Mettre à jour</a></li>
-    <li><a href="#">Ajouter une information</a></li>
+    <li><a href="<%= request.getContextPath() %>">Mettre à jour</a></li>
+    <li><a href="<%= request.getContextPath() %>/market/create">Ajouter une information</a></li>
 </ul>
 
 <table>
@@ -23,7 +23,7 @@
         <th>Variation</th>
     </tfoot>
     <tbody>
-        <% for(Marche m : (ArrayList<Marche>) request.getAttribute("marches")) { %>
+        <% for(Market m : (ArrayList<Market>) request.getAttribute("markets")) { %>
         <tr>
             <td>
                 <a href="#">${m.titre}</a>
