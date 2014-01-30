@@ -1,0 +1,1 @@
+Utilisateur : <%= request.getAttribute("user") %>

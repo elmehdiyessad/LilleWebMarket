@@ -1,6 +1,8 @@
 package framework;
 
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,14 +22,21 @@ import javax.sql.DataSource;
 
 public abstract class Controller extends HttpServlet
 {
-    private DataSource dataSource = null;
     private Connection connection = null;
 
 
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        PrintWriter out = response.getWriter();
+
         try {
+            if(request.getUserPrincipal() != null)
+                request.setAttribute(
+                    "user",
+                    getManager().getRepository("Utilisateur").findOneBy("login", request.getUserPrincipal().getName())
+                );
+
             String[] path = request.getServletPath().split("/");
             String action = (path.length == 3 && path[2].length() > 0)
                 ? path[2]
@@ -36,11 +45,6 @@ public abstract class Controller extends HttpServlet
 
             Method method = this.getClass().getMethod(action + "Action", HttpServletRequest.class, HttpServletResponse.class);
             method.invoke(this, request, response);
-
-            if(connection != null)
-                connection.close();
-            
-            connection = null;
         } catch(Exception e){
             debug(e, response);
         }
@@ -70,50 +74,37 @@ public abstract class Controller extends HttpServlet
 
 
 
-    protected DataSource getDataSource()
+    protected DataSource getDataSource() throws NamingException
     {
-        if(dataSource != null)
-            return dataSource;
-
-        try {
-            Context initContext = new InitialContext();
-            Context envContext  = (Context) initContext.lookup("java:/comp/env");
-            dataSource          = (DataSource) envContext.lookup("database");
-            return dataSource;
-        } catch(NamingException e){}
-
-        return null;
+        Context initContext = new InitialContext();
+        Context envContext  = (Context) initContext.lookup("java:/comp/env");
+        return (DataSource) envContext.lookup("database");
     }
 
-    protected Connection getConnection()
+    protected Connection getConnection() throws Exception
     {
-        if(connection != null)
+        if(connection != null && !connection.isClosed())
             return connection;
 
-        try {
-            if(getDataSource() != null)
-                connection = getDataSource().getConnection();
+        connection = getDataSource().getConnection();
 
-            return connection;
-        } catch(SQLException e){}
-
-        return null;
+        return connection;
     }
 
-    protected ResultSet executeQuery(String query)
+
+
+    protected EntityManager getManager() throws Exception
     {
-        try {
-            return getConnection().createStatement().executeQuery(query);
-        } catch(SQLException e){}
-
-        return null;
+        return EntityManager.getInstance(getConnection());
     }
 
 
 
-    private void debug(Exception e, HttpServletResponse response){
+    protected void debug(Exception e, HttpServletResponse response){
         try {
-            response.getWriter().println(e.getMessage());
+            StringWriter errors = new StringWriter();
+            e.printStackTrace(new PrintWriter(errors));
+            response.getWriter().println(errors.toString());
         } catch(IOException ex){
             ex.printStackTrace();
         }

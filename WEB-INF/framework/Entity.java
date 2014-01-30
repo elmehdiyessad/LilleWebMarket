@@ -1,16 +1,14 @@
 package framework;
 
 
-import java.io.PrintWriter;
 import java.lang.reflect.Method;
-
 import java.sql.ResultSet;
 
 
 
 public abstract class Entity
 {
-    public void hydrate(ResultSet rs, PrintWriter out) throws Exception
+    public void hydrate(ResultSet rs) throws Exception
     {
         Method[] methods = this.getClass().getMethods();
         String fieldName;
