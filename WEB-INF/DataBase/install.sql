@@ -62,28 +62,19 @@ CREATE TABLE lwm_marche (
 -------------------------------------------------
 --- Crée la table des achats en cours des utilisateurs
 -------------------------------------------------
+CREATE TYPE ETAT AS ENUM ('ACHAT', 'VENTE');
 CREATE TABLE lwm_utilisateur_achat (
     login       VARCHAR(30) REFERENCES  lwm_utilisateur(login)   ON DELETE CASCADE   ON UPDATE CASCADE,
     id_marche   INTEGER     REFERENCES  lwm_marche(id)           ON DELETE CASCADE   ON UPDATE CASCADE,
     nb_titres   INTEGER     NOT NULL    CHECK (nb_titres > 0),
+    nb_titres_restants
+                INTEGER     NOT NULL    CHECK (nb_titres > 0),
     prix        INTEGER     NOT NULL    CHECK (prix > 0),
     affirmation BOOLEAN     NOT NULL    DEFAULT TRUE,
     dateachat   TIMESTAMP   NOT NULL    DEFAULT CURRENT_TIMESTAMP,
+    achat_vente BOOLEAN     NOT NULL    DEFAULT TRUE,
 
     PRIMARY KEY (login, id_marche, dateachat)
-);
-
-
-
--------------------------------------------------
---- Crée la table des titres des utilisateurs
--------------------------------------------------
-CREATE TABLE lwm_utilisateur_titre (
-    id          SERIAL      PRIMARY KEY,
-    login       VARCHAR(30) REFERENCES  lwm_utilisateur(login)   ON DELETE CASCADE   ON UPDATE CASCADE,
-    id_marche   INTEGER     REFERENCES  lwm_marche(id)           ON DELETE CASCADE   ON UPDATE CASCADE,
-    nb_titres   INTEGER     NOT NULL    CHECK (nb_titres > 0),
-    prix        INTEGER     NOT NULL    CHECK (prix > 0)
 );
 
 

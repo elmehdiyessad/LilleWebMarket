@@ -43,6 +43,8 @@ public abstract class Controller extends HttpServlet
                 : "index"
             ;
 
+            request.setAttribute("title", action.replace("([A-Z])", " $2"));
+
             Method method = this.getClass().getMethod(action + "Action", HttpServletRequest.class, HttpServletResponse.class);
             method.invoke(this, request, response);
         } catch(Exception e){
@@ -54,9 +56,11 @@ public abstract class Controller extends HttpServlet
 
     protected void render(String view, HttpServletRequest request, HttpServletResponse response)
     {
+        request.setAttribute("template", "/WEB-INF/src/resources/views/" + view.replace(":", "/") + ".jsp");
+
         try {
             getServletContext()
-                .getRequestDispatcher("/WEB-INF/src/resources/views/" + view.replace(":", "/") + ".jsp")
+                .getRequestDispatcher("/WEB-INF/src/resources/views/base.jsp")
                 .forward(request, response);
         } catch(Exception e){
             debug(e, response);

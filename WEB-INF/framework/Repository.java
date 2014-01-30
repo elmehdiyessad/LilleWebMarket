@@ -17,12 +17,28 @@ public abstract class Repository<T extends Entity>
 
 
 
+    public String getQuery(String condition) throws Exception
+    {
+        return 
+            "SELECT * " +
+            "FROM lwm_" + camelCaseToUnderscore(getEntityName()) + " " + 
+            condition + ";"
+        ;
+    }
+
+    public String getQuery() throws Exception
+    {
+        return getQuery("");
+    }
+
+
+
     public T findOneBy(String field, String value) throws Exception
     {
         ResultSet rs = connection.createStatement().executeQuery(
-            "SELECT * " +
-            "FROM lwm_" + camelCaseToUnderscore(getEntityName()) + " " +
-            "WHERE " + camelCaseToUnderscore(field) + " = '" + value + "';"
+            getQuery(
+                "WHERE " + camelCaseToUnderscore(field) + " = '" + value + "'"
+            )
         );
 
         rs.next();
@@ -39,9 +55,9 @@ public abstract class Repository<T extends Entity>
     public ArrayList<T> findBy(String field, String value) throws Exception
     {
         ResultSet rs = connection.createStatement().executeQuery(
-            "SELECT * " +
-            "FROM lwm_" + camelCaseToUnderscore(getEntityName()) + " " +
-            "WHERE " + camelCaseToUnderscore(field) + " = '" + value + "';"
+            getQuery(
+                "WHERE " + camelCaseToUnderscore(field) + " = '" + value + "'"
+            )
         );
 
         return resultSetToList(rs);
@@ -50,8 +66,7 @@ public abstract class Repository<T extends Entity>
     public ArrayList<T> findAll() throws Exception
     {
         ResultSet rs = connection.createStatement().executeQuery(
-            "SELECT * " +
-            "FROM lwm_" + camelCaseToUnderscore(getEntityName()) + ";"
+            getQuery()
         );
 
         return resultSetToList(rs);

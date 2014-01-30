@@ -1,17 +1,19 @@
-<form action="<%= response.encodeURL("j_security_check") %>" method="post">
-    <fieldset>
-        <legend>Login</legend>
-        <p>
-            <label for="name">Username</label>
-            <input type="text" name="j_username">
-        </p>
-        <p>
-            <label for="e-mail">Passsword</label>
-            <input type="password" name="j_password">
-        </p>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@ page pageEncoding="UTF-8"%>
 
-        <p class="submit">
-            <input type="submit" value="Submit">
-        </p>
-    </fieldset>
+<h2>Connexion</h2>
+
+<form action="<%= response.encodeURL("j_security_check") %>" method="post">
+    <p>
+        <label for="name">Nom d'utilisateur</label>
+        <input type="text" name="j_username">
+    </p>
+    <p>
+        <label for="e-mail">Mot de passe</label>
+        <input type="password" name="j_password">
+    </p>
+
+    <p class="submit">
+        <input type="submit" value="Submit">
+    </p>
 </form>
