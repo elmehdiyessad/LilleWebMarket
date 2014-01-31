@@ -45,9 +45,10 @@ public class MarketController extends Controller
 
     public void buyAction(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
-        if(!request.getMethod().equals("POST")){
-            // Récupèrer l'id du market
+        // Récupèrer l'id du market
+        int id = Integer.parseInt(request.getParameter("id"));
 
+        if(!request.getMethod().equals("POST")){
             // Crée un objet UserStock
 
             // Rechercher les UserStock inverses dont le prix est inférieur (ordre : prix DESC, date DESC)
@@ -69,7 +70,7 @@ public class MarketController extends Controller
         redirect(response, request.getContextPath() + "/market/show?id=" + id);
     }
 
-    
+
 
     private MarketRepository getRepository(HttpServletRequest request) throws Exception
     {

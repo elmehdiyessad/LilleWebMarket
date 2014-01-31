@@ -5,9 +5,24 @@ Site web de bourse d'informations
 
 
 
-# Installation
+Installation
+------------
 
-Installation de la base de données :
+> Note : les commandes sont à lancer depuis la racine du contexte LilleWebMarket (tomcat/webapps/LilleWebMarket/)
 
-- Executer le script ```DataBase/install.sql```
-- Executez, au besoin les différentes fixtures ```DataBase/fixtures/*.sql```
+### Compilation des classes
+
+```
+./compile
+```
+
+### Installation de la base de données
+
+- Executer le script ```META-INF/database/install.sql```
+- Executez, au besoin les différentes fixtures ```META-INF/database/fixtures/*.sql```
+
+Exemple pour tout installer en une seule commande :
+
+```
+cat META-INF/database/install.sql META-INF/database/fixtures/*.sql | psql -f -
+```

@@ -14,18 +14,12 @@
 -------------------------------------------------
 --- Purge la base de données
 -------------------------------------------------
-DROP TABLE lwm_variations_marche;
-DROP TABLE lwm_utilisateur_titre;
-DROP TABLE lwm_utilisateur_achat;
-DROP TABLE lwm_marche;
-DROP TABLE lwm_utilisateur_infos;
-DROP TABLE lwm_utilisateur;
-
 DROP TABLE lwm_variations_market;
 DROP TABLE lwm_user_stock;
 DROP TABLE lwm_market;
 DROP TABLE lwm_user_infos;
 DROP TABLE lwm_user;
+DROP TYPE  ETAT;
 
 
 
@@ -77,7 +71,7 @@ CREATE TABLE lwm_user_stock (
     price       INTEGER     NOT NULL    CHECK (price > 0),
     assertion   BOOLEAN     NOT NULL    DEFAULT TRUE,
     date_buy    TIMESTAMP   NOT NULL    DEFAULT CURRENT_TIMESTAMP,
-    buy_sell    ETAT        NOT NULL    DEFAULT 'BUY',
+    buy_sell    ETAT        NOT NULL,
 
     PRIMARY KEY (login, id_market, date_buy)
 );

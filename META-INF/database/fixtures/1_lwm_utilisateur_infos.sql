@@ -14,7 +14,7 @@
 
 
 -------------------------------------------------
---- Crée des utilisateurs de test
+--- Crée les infos des utilisateurs de test
 -------------------------------------------------
 INSERT INTO lwm_user_infos (login, role, cash)
 	VALUES ('demodea', 'user', 20000);
