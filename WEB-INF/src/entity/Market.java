@@ -1,6 +1,7 @@
 package src.entity;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import framework.Entity;
@@ -9,6 +10,8 @@ import framework.Entity;
 
 public class Market extends Entity
 {
+    public static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     protected int    id;
     protected String title;
     protected String titleRev;
@@ -50,6 +53,10 @@ public class Market extends Entity
 
     public void setTerm(Date term) {
         this.term = term;
+    }
+
+    public void setTerm(String term) throws Exception {
+        this.term = formatter.parse(term);
     }
 
 

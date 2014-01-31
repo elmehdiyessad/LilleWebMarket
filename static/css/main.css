@@ -212,6 +212,15 @@ a:focus {
 table {
     width: 100%;
     border: 1px solid #95a5a6;
+    margin-bottom: 30px;
+}
+table caption {
+    height: 30px;
+    line-height: 30px;
+    background: #95a5a6;
+    text-shadow: rgba(255, 255, 255, .7) 0 0 3px;
+    color: #333;
+    text-transform: uppercase;
 }
 table thead,
 table tfoot {

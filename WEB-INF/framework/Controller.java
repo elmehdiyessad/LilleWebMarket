@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import src.entity.UserRepository;
+
 
 
 public abstract class Controller extends HttpServlet
@@ -30,7 +32,7 @@ public abstract class Controller extends HttpServlet
             if(request.getUserPrincipal() != null)
                 request.setAttribute(
                     "user",
-                    getManager(request).getRepository("User").findOneBy("login", request.getUserPrincipal().getName())
+                    ((UserRepository) getManager(request).getRepository("User")).findOneByLogin(request.getUserPrincipal().getName())
                 );
 
             String[] path = request.getServletPath().split("/");
@@ -65,6 +67,11 @@ public abstract class Controller extends HttpServlet
         } catch(Exception e){
             debug(e, response);
         }
+    }
+    protected void render(String view, HttpServletRequest request, HttpServletResponse response, String title)
+    {
+        request.setAttribute("title", title);
+        render(view, request, response);
     }
 
     protected void redirect(HttpServletResponse response, String path)

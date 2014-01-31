@@ -72,6 +72,12 @@
             <web-resource-name>login</web-resource-name>
             <url-pattern>/security/login</url-pattern>
         </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>market</web-resource-name>
+            <url-pattern>/market/create</url-pattern>
+            <url-pattern>/market/update</url-pattern>
+            <url-pattern>/market/delete</url-pattern>
+        </web-resource-collection>
 
         <auth-constraint>
             <role-name>user</role-name>

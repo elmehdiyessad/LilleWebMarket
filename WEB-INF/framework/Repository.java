@@ -3,8 +3,8 @@ package framework;
 
 import java.lang.reflect.Constructor;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
@@ -17,30 +17,29 @@ public abstract class Repository<T extends Entity>
 
 
 
-    public String getQuery(String condition) throws Exception
+    public String getQuery() throws Exception
     {
         return
             "SELECT * " +
-            "FROM lwm_" + camelCaseToUnderscore(getEntityName()) + " " +
-            condition + ";"
+            "FROM " + getTableName()
         ;
     }
 
-    public String getQuery() throws Exception
+    public ArrayList<T> findAll() throws Exception
     {
-        return getQuery("");
-    }
-
-
-
-    public T findOneBy(String field, Object value) throws Exception
-    {
-        ResultSet rs = connection.createStatement().executeQuery(
-            getQuery(
-                "WHERE " + camelCaseToUnderscore(field) + " = '" + value + "'"
-            )
+        ResultSet rs = getConnection().createStatement(
+            ResultSet.TYPE_SCROLL_INSENSITIVE,
+            ResultSet.CONCUR_READ_ONLY
+        ).executeQuery(
+            getQuery()
         );
 
+        return resultSetToList(rs);
+    }
+
+    public T getSingleResult(ResultSet rs) throws Exception
+    {
+        rs.beforeFirst();
         rs.next();
 
         T entity = createEntity(rs);
@@ -52,31 +51,12 @@ public abstract class Repository<T extends Entity>
         throw new Exception("Not single result");
     }
 
-    public ArrayList<T> findBy(String field, String value) throws Exception
-    {
-        ResultSet rs = getConnection().createStatement().executeQuery(
-            getQuery(
-                "WHERE " + camelCaseToUnderscore(field) + " = '" + value + "'"
-            )
-        );
-
-        return resultSetToList(rs);
-    }
-
-    public ArrayList<T> findAll() throws Exception
-    {
-        ResultSet rs = getConnection().createStatement().executeQuery(
-            getQuery()
-        );
-
-        return resultSetToList(rs);
-    }
-
 
 
     protected ArrayList<T> resultSetToList(ResultSet rs) throws Exception
     {
         ArrayList<T> results = new ArrayList<T>();
+        rs.beforeFirst();
 
         while(rs.next())
             results.add(createEntity(rs));
@@ -89,6 +69,11 @@ public abstract class Repository<T extends Entity>
     protected String getEntityName() throws Exception
     {
         return this.getClass().getSimpleName().replace("Repository", "");
+    }
+
+    protected String getTableName() throws Exception
+    {
+        return "lwm_" + camelCaseToUnderscore(getEntityName());
     }
 
     protected String camelCaseToUnderscore(String s)
@@ -109,9 +94,18 @@ public abstract class Repository<T extends Entity>
 
 
 
-    public Connection getConnection()
+    protected Connection getConnection()
     {
         return connection;
+    }
+
+    protected PreparedStatement prepareStatement(String query) throws Exception
+    {
+        return getConnection().prepareStatement(
+            query,
+            ResultSet.TYPE_SCROLL_INSENSITIVE,
+            ResultSet.CONCUR_READ_ONLY
+        );
     }
 
     public void setConnection(Connection connection)

@@ -3,8 +3,6 @@
 
 
 
-<h2>Créer un marché</h2>
-
 <form action="<%= request.getContextPath() %>/market/create" method="post">
     <p>
         <label for="title">Titre</label>
@@ -16,7 +14,10 @@
     </p>
     <p>
         <label for="term">Date d'échéance</label>
-        <input type="datetime" name="term" id="term">
+        <input type="datetime" name="term" id="term"
+               placeholder="yyyy-mm-dd hh:mm:ss"
+               pattern="([0-2][0-9]{3})\-([0-1][0-9])\-([0-3][0-9]) ([0-5][0-9])\:([0-5][0-9])\:([0-5][0-9])"
+        >
     </p>
 
     <p class="submit">

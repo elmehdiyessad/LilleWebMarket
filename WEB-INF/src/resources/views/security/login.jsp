@@ -1,8 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ page pageEncoding="UTF-8"%>
 
-<h2>Connexion</h2>
-
 <form action="<%= response.encodeURL("j_security_check") %>" method="post">
     <p>
         <label for="login">Nom d'utilisateur</label>

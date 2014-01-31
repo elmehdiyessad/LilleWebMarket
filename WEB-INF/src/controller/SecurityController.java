@@ -18,7 +18,7 @@ public class SecurityController extends Controller
         if(request.getDispatcherType() == javax.servlet.DispatcherType.FORWARD)
             redirect(response, request.getContextPath() + "/login");
         else
-        	render("security:login", request, response);
+        	render("security:login", request, response, "Connexion");
     }
 
     public void loginAction(HttpServletRequest request, HttpServletResponse response)

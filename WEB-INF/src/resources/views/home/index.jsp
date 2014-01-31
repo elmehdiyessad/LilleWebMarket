@@ -4,7 +4,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8" %>
 
-<h2>Accueil</h2>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <ul class="actions">
     <li><a href="<%= request.getContextPath() %>">Mettre à jour</a></li>
@@ -23,18 +23,18 @@
         <th>Variation</th>
     </tfoot>
     <tbody>
-        <% for(Market m : (ArrayList<Market>) request.getAttribute("markets")) { %>
-        <tr>
-            <td>
-                <a href="#">${m.titre}</a>
-            </td>
-            <td class="center">
-                <time class="endtime">${m.echeance}</time>
-            </td>
-            <td class="variation negative center">
-                ??%
-            </td>
-        </tr>
-        <% } %>
+        <c:forEach items="${markets}" var="m">
+            <tr>
+                <td>
+                    <a href="<%= request.getContextPath() %>/market/show?id=${m.id}">${m.title}</a>
+                </td>
+                <td class="center">
+                    <time class="endtime">${m.term}</time>
+                </td>
+                <td class="variation negative center">
+                    ??%
+                </td>
+            </tr>
+        </c:forEach>
     </tbody>
 </table>
