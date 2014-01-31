@@ -43,6 +43,32 @@ public class MarketController extends Controller
         }
     }
 
+    public void buyAction(HttpServletRequest request, HttpServletResponse response) throws Exception
+    {
+        if(!request.getMethod().equals("POST")){
+            // Récupèrer l'id du market
+
+            // Crée un objet UserStock
+
+            // Rechercher les UserStock inverses dont le prix est inférieur (ordre : prix DESC, date DESC)
+            // au prix de l'UserStock en création (SELECT SQL)
+
+            // Pour chaque UserStock capable de vendre au prix demandé
+                // Augmenter la valeur nbSold du UserStock débiteur d'autant que possible (UPDATE SQL)
+                // Augmenter la valeur nbBuy du UserStock en création de cette même valeur
+                // Retirer price * cette valeur au cash de l'User
+
+            // Mettre à jour le cash de l'User (UPDATE SQL)
+
+            // Sauvegarder le nouvel UserStock (INSERT SQL)
+
+            // Afficher un message de confirmation
+        }
+
+        // Rediriger vers la page du marché
+        redirect(response, request.getContextPath() + "/market/show?id=" + id);
+    }
+
     
 
     private MarketRepository getRepository(HttpServletRequest request) throws Exception

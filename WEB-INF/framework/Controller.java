@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import src.entity.UserRepository;
@@ -30,7 +31,8 @@ public abstract class Controller extends HttpServlet
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-        PrintWriter out = response.getWriter();
+        PrintWriter out     = response.getWriter();
+        HttpSession session = request.getSession(true);
 
         try {
             if(request.getUserPrincipal() != null)
@@ -46,6 +48,9 @@ public abstract class Controller extends HttpServlet
             ;
 
             request.setAttribute("title", action.replace("([A-Z])", " $2"));
+            request.setAttribute("flashBag", (HashMap<String, String>) session.getAttribute("flashBag"));
+
+            session.getAttribute("flashBag") = new HashMap<String, String>();
 
             Method method = this.getClass().getMethod(action + "Action", HttpServletRequest.class, HttpServletResponse.class);
             method.invoke(this, request, response);
@@ -85,6 +90,13 @@ public abstract class Controller extends HttpServlet
         } catch(Exception e){
             debug(e, response);
         }
+    }
+
+
+
+    protected void addFlash(HttpServletRequest request, String type, String message)
+    {
+        ((HashMap<String, String>) request.getSession(true).getAttribute("flashBag")).put(type, message);
     }
 
 
