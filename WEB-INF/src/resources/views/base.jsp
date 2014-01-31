@@ -1,10 +1,8 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page pageEncoding="UTF-8" %>
-
-<jsp:useBean id="user" scope="request" class="src.entity.User"/>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>${title} | LilleWebMarket</title>
 
     <link rel="stylesheet" type="text/css" href="<%= request.getContextPath() %>/static/css/normalize.css">
@@ -23,8 +21,7 @@
                         <div class="infos">
                             <span class="pseudo">${user.firstName}</span>
                             <div class="cash">
-                                <span class="def">Cash</span>
-                                <span class="value">???</span>
+                                <span class="value">Cash : ${user.cash}€</span>
                             </div>
 
                             <ul>
@@ -42,7 +39,7 @@
                                 </li>
                                 <li>
                                     <span class="def">Gain</span>
-                                    <span class="value">??€</span>
+                                    <span class="value">???</span>
                                 </li>
                             </ul>
                         </div>
@@ -57,9 +54,7 @@
             <div class="wrapper">
                 <h2>${title}</h2>
 
-                <jsp:include page="${template}" flush="true">
-                    <jsp:param name="request" value="${request}" />
-                </jsp:include>
+                <jsp:include page="${template}" flush="true"/>
             </div>
         </main>
 

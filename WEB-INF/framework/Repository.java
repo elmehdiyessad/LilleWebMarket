@@ -71,9 +71,13 @@ public abstract class Repository<T extends Entity>
         return this.getClass().getSimpleName().replace("Repository", "");
     }
 
+    protected String getTableName(String name) throws Exception
+    {
+        return "lwm_" + camelCaseToUnderscore(name);
+    }
     protected String getTableName() throws Exception
     {
-        return "lwm_" + camelCaseToUnderscore(getEntityName());
+        return getTableName(getEntityName());
     }
 
     protected String camelCaseToUnderscore(String s)

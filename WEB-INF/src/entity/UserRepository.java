@@ -18,8 +18,9 @@ public class UserRepository extends Repository<User>
     {
         PreparedStatement ps = prepareStatement(
             "SELECT * " +
-            "FROM " + getTableName() + " " +
-            "WHERE login = ?"
+            "FROM " + getTableName() + " AS u " +
+            "LEFT JOIN " + getTableName("UserInfos") + " AS ui ON u.login = ui.login " +
+            "WHERE u.login = ?"
         );
 
         ps.setString(1, login);

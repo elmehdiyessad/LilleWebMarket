@@ -102,7 +102,7 @@ a:focus {
     position: relative;
     margin-top: 20px;
     float: right;
-    width: 300px;
+    width: 350px;
     height: 80px;
     background: rgba(0, 0, 0, .1);
     border-radius: 0 0 35px;
@@ -133,7 +133,7 @@ a:focus {
     float: left;
     margin: 10px 0 0 15px;
     color: #EEE;
-    width: calc(100% - 100px);
+    width: calc(100% - 90px);
 }
 .logbox .pseudo {
     display: block;
@@ -142,7 +142,7 @@ a:focus {
 .logbox .pseudo:after {
     content: " ";
     display: block;
-    width: 107%;
+    width: 102%;
     height: 2px;
     background: rgba(255, 255, 255, .8);
 }
