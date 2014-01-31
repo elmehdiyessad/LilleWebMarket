@@ -18,8 +18,9 @@ public class MarketRepository extends Repository<Market>
     {
         PreparedStatement ps = prepareStatement(
             "SELECT * " +
-            "FROM " + getTableName() + " " +
-            "WHERE id = ?"
+            "FROM " + getTableName() + " AS m " +
+            "LEFT JOIN " + getTableName("UserStock") + " AS us ON m.id = us.id_market " +
+            "WHERE m.id = ?"
         );
 
         ps.setInt(1, id);

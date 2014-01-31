@@ -31,8 +31,6 @@ public class MarketController extends Controller
         );
     }
 
-
-
     public void createAction(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         if(request.getMethod().equals("POST")){
@@ -44,6 +42,8 @@ public class MarketController extends Controller
             render("market:create", request, response, "Créer un marché");
         }
     }
+
+    
 
     private MarketRepository getRepository(HttpServletRequest request) throws Exception
     {

@@ -73,7 +73,7 @@ CREATE TABLE lwm_user_stock (
     login       TEXT        REFERENCES  lwm_user(login) ON DELETE CASCADE  ON UPDATE CASCADE,
     id_market   INTEGER     REFERENCES  lwm_market(id)  ON DELETE CASCADE  ON UPDATE CASCADE,
     nb_stock    INTEGER     NOT NULL    CHECK (nb_stock > 0),
-    nb_sold     INTEGER     NOT NULL    CHECK (nb_sold > 0),
+    nb_sold     INTEGER     NOT NULL    CHECK (nb_sold >= 0),
     price       INTEGER     NOT NULL    CHECK (price > 0),
     assertion   BOOLEAN     NOT NULL    DEFAULT TRUE,
     date_buy    TIMESTAMP   NOT NULL    DEFAULT CURRENT_TIMESTAMP,

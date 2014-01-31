@@ -24,6 +24,7 @@
                                 <span class="value">Cash : ${user.cash}€</span>
                             </div>
 
+                            <!--
                             <ul>
                                 <li>
                                     <span class="def">Mes Bons</span>
@@ -42,6 +43,7 @@
                                     <span class="value">???</span>
                                 </li>
                             </ul>
+                        	-->
                         </div>
                     <% } else { %>
                         <a href="<%= request.getContextPath() %>/security/login" class="login">Connexion</a>
