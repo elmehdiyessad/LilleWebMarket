@@ -21,7 +21,9 @@ public class Market extends Entity
 
 
 
-    public Market(){}
+    public Market(){
+        stocks = new ArrayList<UserStock>();
+    }
 
 
 

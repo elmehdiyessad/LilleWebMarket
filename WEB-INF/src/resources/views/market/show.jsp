@@ -9,30 +9,6 @@
 </ul>
 
 <table>
-    <caption>Achats</caption>
-    <thead>
-        <th>Nombre</th>
-        <th>Prix</th>
-        <th>Utilisateur</th>
-    </thead>
-    <tbody>
-        <c:forEach items="${market.stocks}" var="s">
-            <tr>
-                <td class="center">
-                    ${s.nbStock - s.nbSold}
-                </td>
-                <td class="center">
-                    ${s.price} €
-                </td>
-                <td>
-                    ${s.user}
-                </td>
-            </tr>
-        </c:forEach>
-    </tbody>
-</table>
-
-<table>
     <caption>Ventes</caption>
     <thead>
         <th>Nombre</th>
@@ -41,17 +17,45 @@
     </thead>
     <tbody>
         <c:forEach items="${market.stocks}" var="s">
-            <tr>
-                <td class="center">
-                    ${s.nbStock - s.nbSold}
-                </td>
-                <td class="center">
-                    ${s.price} €
-                </td>
-                <td>
-                    ${s.user}
-                </td>
-            </tr>
+            <c:if test="${s.assertion == !empty param.rev}">
+                <tr>
+                    <td class="center">
+                        ${s.nbStock - s.nbSold}
+                    </td>
+                    <td class="center">
+                        ${s.price} €
+                    </td>
+                    <td class="center">
+                        ${s.login}
+                    </td>
+                </tr>
+            </c:if>
+        </c:forEach>
+    </tbody>
+</table>
+
+<table>
+    <caption>Achats</caption>
+    <thead>
+        <th>Nombre</th>
+        <th>Prix</th>
+        <th>Utilisateur</th>
+    </thead>
+    <tbody>
+        <c:forEach items="${market.stocks}" var="s">
+            <c:if test="${s.assertion == empty param.rev}">
+                <tr>
+                    <td class="center">
+                        ${s.nbStock - s.nbSold}
+                    </td>
+                    <td class="center">
+                        ${s.price} €
+                    </td>
+                    <td class="center">
+                        ${s.login}
+                    </td>
+                </tr>
+            </c:if>
         </c:forEach>
     </tbody>
 </table>

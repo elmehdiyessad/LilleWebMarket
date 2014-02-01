@@ -73,7 +73,7 @@ CREATE TABLE lwm_user_stock (
     date_buy    TIMESTAMP   NOT NULL    DEFAULT CURRENT_TIMESTAMP,
     buy_or_sell ETAT        NOT NULL,
 
-    PRIMARY KEY (login, id_market, date_buy)
+    PRIMARY KEY (login, market_id, date_buy)
 );
 
 
@@ -86,5 +86,5 @@ CREATE TABLE lwm_variations_market (
     instant     TIMESTAMP   NOT NULL,
     value       INTEGER     NOT NULL,
 
-    PRIMARY KEY (id_market, instant)
+    PRIMARY KEY (market_id, instant)
 );

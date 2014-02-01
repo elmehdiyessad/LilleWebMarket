@@ -19,13 +19,23 @@ public class MarketRepository extends Repository<Market>
         PreparedStatement ps = prepareStatement(
             "SELECT * " +
             "FROM " + getTableName() + " AS m " +
-            "LEFT JOIN " + getTableName("UserStock") + " AS us ON m.id = us.id_market " +
+            "LEFT JOIN " + getTableName("UserStock") + " AS us ON m.id = us.market_id " +
             "WHERE m.id = ?"
         );
 
         ps.setInt(1, Integer.parseInt(id));
 
-        return getSingleResult(ps.executeQuery());
+        ResultSet rs = ps.executeQuery();
+        Market m     = getSingleResult(rs);
+        UserStock us;
+
+        while(rs.next()){
+            us = new UserStock();
+            us.hydrate(rs);
+            m.getStocks().add(us);
+        }
+
+        return m;
     }
 
     public Integer create(Market m) throws Exception
