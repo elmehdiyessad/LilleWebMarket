@@ -57,20 +57,21 @@
 </table>
 
 
-
-<div>
-    <form action="<%= request.getContextPath() %>/market/buy?id=${market.id}" method="post">
-        <h2>Acheter des titres</h2>
-        <p>
-            <label for="nb_stock">Quantité</label>
-            <input type="number" name="nb_stock" id="nb_stock">
-        </p>
-        <p>
-            <label for="price">Prix</label>
-            <input type="number" name="price" id="price">
-        </p>
-        <p>
-            <input type="submit" value="Acheter">
-        </p>
-    </form>
-</div>
+<c:if test="${!empty pageContext.request.userPrincipal}">
+    <div>
+        <form action="<%= request.getContextPath() %>/market/buy?id=${market.id}" method="post">
+            <h3>Acheter des titres</h3>
+            <p>
+                <label for="nb_stock">Quantité</label>
+                <input type="number" name="nb_stock" id="nb_stock">
+            </p>
+            <p>
+                <label for="price">Prix</label>
+                <input type="number" name="price" id="price">
+            </p>
+            <p>
+                <input type="submit" value="Acheter">
+            </p>
+        </form>
+    </div>
+</c:if>

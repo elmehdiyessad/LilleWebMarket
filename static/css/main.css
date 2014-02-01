@@ -183,6 +183,22 @@ a:focus {
 
 
 
+.flash.success {
+    background: #27ae60;
+}
+.flash.error {
+    background: #c0392b;
+}
+.flash {
+    padding: 13px 2%;
+    margin-top: 10px;
+    color: #FFF;
+}
+
+
+
+
+
 .actions {
     margin: 0;
     padding: 0;

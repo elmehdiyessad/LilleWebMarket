@@ -14,7 +14,7 @@ public class MarketRepository extends Repository<Market>
 
 
 
-    public Market findOneById(Integer id) throws Exception
+    public Market findOneById(String id) throws Exception
     {
         PreparedStatement ps = prepareStatement(
             "SELECT * " +
@@ -23,7 +23,7 @@ public class MarketRepository extends Repository<Market>
             "WHERE m.id = ?"
         );
 
-        ps.setInt(1, id);
+        ps.setInt(1, Integer.parseInt(id));
 
         return getSingleResult(ps.executeQuery());
     }

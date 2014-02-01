@@ -44,11 +44,7 @@ public abstract class Repository<T extends Entity>
 
         T entity = createEntity(rs);
 
-        // Try to go to next to check it is single result
-        if(!rs.next())
-            return entity;
-
-        throw new Exception("Not single result");
+        return entity;
     }
 
 

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
+import src.entity.User;
 import src.entity.UserRepository;
 
 
@@ -120,6 +121,13 @@ public abstract class Controller extends HttpServlet
         }
 
         return EntityManager.getInstance(connection);
+    }
+
+
+
+    protected User getUser(HttpServletRequest request)
+    {
+        return ((User) request.getAttribute("user"));
     }
 
 

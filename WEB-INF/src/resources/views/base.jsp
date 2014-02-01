@@ -1,5 +1,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -16,7 +18,7 @@
                     <a href="<%= request.getContextPath() %>">LilleWebMarket</a>
                 </h1>
                 <div class="logbox">
-                    <% if(request.getUserPrincipal() != null) { %>
+                    <c:if test="${!empty pageContext.request.userPrincipal}">
                         <img src="http://lorempicsum.com/futurama/60/60/6" class="avatar">
                         <div class="infos">
                             <span class="pseudo">${user.firstName}</span>
@@ -45,15 +47,22 @@
                             </ul>
                         	-->
                         </div>
-                    <% } else { %>
+                    </c:if>
+                    <c:if test="${empty pageContext.request.userPrincipal}">
                         <a href="<%= request.getContextPath() %>/security/login" class="login">Connexion</a>
-                    <% } %>
+                    </c:if>
                 </div>
             </div>
         </header>
 
         <main role="main">
             <div class="wrapper">
+                <c:forEach items="${flashBag}" var="f">
+                    <div class="flash ${f.key}">
+                        ${f.value}
+                    </div>
+                </c:forEach>
+
                 <h2>${title}</h2>
 
                 <jsp:include page="${template}" flush="true"/>

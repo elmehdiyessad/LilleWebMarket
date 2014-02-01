@@ -64,9 +64,11 @@
     <servlet-mapping>
         <servlet-name>MarketController</servlet-name>
         <url-pattern>/markets</url-pattern>
-        <url-pattern>/market/create</url-pattern>
         <url-pattern>/market/show</url-pattern>
-        <url-pattern>/market/update</url-pattern>
+
+        <url-pattern>/market/create</url-pattern>
+        <url-pattern>/market/buy</url-pattern>
+        <url-pattern>/market/sell</url-pattern>
         <url-pattern>/market/delete</url-pattern>
     </servlet-mapping>
 
@@ -95,7 +97,8 @@
         <web-resource-collection>
             <web-resource-name>market</web-resource-name>
             <url-pattern>/market/create</url-pattern>
-            <url-pattern>/market/update</url-pattern>
+            <url-pattern>/market/buy</url-pattern>
+            <url-pattern>/market/sell</url-pattern>
             <url-pattern>/market/delete</url-pattern>
         </web-resource-collection>
 

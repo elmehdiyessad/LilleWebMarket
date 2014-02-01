@@ -13,6 +13,8 @@ import framework.Controller;
 
 import src.entity.Market;
 import src.entity.MarketRepository;
+import src.entity.UserStock;
+import src.entity.UserStockRepository;
 
 
 
@@ -20,7 +22,7 @@ public class MarketController extends Controller
 {
     public void showAction(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
-        Market m = getRepository(request).findOneById(Integer.parseInt(request.getParameter("id")));
+        Market m = getRepository(request).findOneById(request.getParameter("id"));
         request.setAttribute("market", m);
 
         render(
@@ -46,13 +48,24 @@ public class MarketController extends Controller
     public void buyAction(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         // Récupèrer l'id du market
-        int id = Integer.parseInt(request.getParameter("id"));
+        int marketId = Integer.parseInt(request.getParameter("id"));
 
-        if(!request.getMethod().equals("POST")){
+        if(request.getMethod().equals("POST")){
             // Crée un objet UserStock
+            UserStock stock = new UserStock();
+            stock.setMarketId(marketId);
+            stock.setLogin(getUser(request).getLogin());
+            stock.setAssertion(request.getParameter("rev") == null);
+
+            // Récupérer les valeurs du formulaire
+            stock.hydrate(request);
+
+            // Récupérer le UserStockRepository
+            UserStockRepository stockRepo = ((UserStockRepository) getManager(request).getRepository("UserStock"));
 
             // Rechercher les UserStock inverses dont le prix est inférieur (ordre : prix DESC, date DESC)
             // au prix de l'UserStock en création (SELECT SQL)
+            stockRepo.findPurchasable(marketId, stock.getAssertion(), stock.getPrice());
 
             // Pour chaque UserStock capable de vendre au prix demandé
                 // Augmenter la valeur nbSold du UserStock débiteur d'autant que possible (UPDATE SQL)
@@ -64,10 +77,11 @@ public class MarketController extends Controller
             // Sauvegarder le nouvel UserStock (INSERT SQL)
 
             // Afficher un message de confirmation
+            addFlash(request, "success", "Achat effectué");
         }
 
         // Rediriger vers la page du marché
-        redirect(response, request.getContextPath() + "/market/show?id=" + id);
+        redirect(response, request.getContextPath() + "/market/show?id=" + marketId);
     }
 
 
