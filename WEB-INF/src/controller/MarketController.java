@@ -13,6 +13,7 @@ import framework.Controller;
 
 import src.entity.Market;
 import src.entity.MarketRepository;
+import src.entity.User;
 import src.entity.UserStock;
 import src.entity.UserStockRepository;
 
@@ -51,7 +52,10 @@ public class MarketController extends Controller
         int marketId = Integer.parseInt(request.getParameter("id"));
 
         if(request.getMethod().equals("POST")){
-            // Crée un objet UserStock
+            // Récupérer l'User
+            User user = (User) request.getAttribute("user");
+
+            // Créer un objet UserStock
             UserStock stock = new UserStock();
             stock.setMarketId(marketId);
             stock.setLogin(getUser(request).getLogin());
@@ -65,12 +69,23 @@ public class MarketController extends Controller
 
             // Rechercher les UserStock inverses dont le prix est inférieur (ordre : prix DESC, date DESC)
             // au prix de l'UserStock en création (SELECT SQL)
-            stockRepo.findPurchasable(marketId, stock.getAssertion(), stock.getPrice());
+            ArrayList<UserStock> purchasable = stockRepo.findPurchasable(marketId, stock.getAssertion(), stock.getPrice());
+
+            int qte = 0;
 
             // Pour chaque UserStock capable de vendre au prix demandé
+            for(UserStock us : purchasable){
                 // Augmenter la valeur nbSold du UserStock débiteur d'autant que possible (UPDATE SQL)
+                qte = us.getNbStock() - us.getNbSold();
+                if(qte > stock.getNbStock())
+                    qte = stock.getNbStock();
+
                 // Augmenter la valeur nbBuy du UserStock en création de cette même valeur
+                stock.addNbSold(qte);
+
                 // Retirer price * cette valeur au cash de l'User
+                user.subCash(qte * us.getPrice());
+            }
 
             // Mettre à jour le cash de l'User (UPDATE SQL)
 

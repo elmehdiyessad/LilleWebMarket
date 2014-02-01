@@ -70,10 +70,10 @@ CREATE TABLE lwm_user_stock (
     nb_sold     INTEGER     NOT NULL    CHECK (nb_sold >= 0),
     price       INTEGER     NOT NULL    CHECK (price > 0),
     assertion   BOOLEAN     NOT NULL    DEFAULT TRUE,
-    date_buy    TIMESTAMP   NOT NULL    DEFAULT CURRENT_TIMESTAMP,
+    creation    TIMESTAMP   NOT NULL    DEFAULT CURRENT_TIMESTAMP,
     buy_or_sell ETAT        NOT NULL,
 
-    PRIMARY KEY (login, market_id, date_buy)
+    PRIMARY KEY (login, market_id, creation)
 );
 
 

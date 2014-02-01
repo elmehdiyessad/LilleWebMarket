@@ -59,6 +59,16 @@ public class User extends Entity
         this.cash = cash;
     }
 
+    public void addCash(int cashToAdd)
+    {
+        this.cash += cashToAdd;
+    }
+
+    public void subCash(int cashToSub)
+    {
+        this.cash -= cashToSub;
+    }
+
 
 
     public String toString()

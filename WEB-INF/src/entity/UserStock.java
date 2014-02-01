@@ -80,6 +80,11 @@ public class UserStock extends Entity
         this.nbSold = nbSold;
     }
 
+    public void addNbSold(int nbSoldToAdd)
+    {
+        this.nbSold += nbSoldToAdd;
+    }
+
     public void setPrice(int price) {
         this.price = price;
     }

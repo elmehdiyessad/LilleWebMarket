@@ -20,7 +20,8 @@ public class MarketRepository extends Repository<Market>
             "SELECT * " +
             "FROM " + getTableName() + " AS m " +
             "LEFT JOIN " + getTableName("UserStock") + " AS us ON m.id = us.market_id " +
-            "WHERE m.id = ?"
+            "WHERE m.id = ? " +
+            "ORDER BY us.price DESC, us.creation DESC"
         );
 
         ps.setInt(1, Integer.parseInt(id));
