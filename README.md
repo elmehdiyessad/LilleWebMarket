@@ -18,6 +18,7 @@ Installation
 
 ### Installation de la base de données
 
+- Configurer l'accès à la BDD dans ```META-INF/context.xml```
 - Executer le script ```META-INF/database/install.sql```
 - Executez, au besoin les différentes fixtures ```META-INF/database/fixtures/*.sql```
 

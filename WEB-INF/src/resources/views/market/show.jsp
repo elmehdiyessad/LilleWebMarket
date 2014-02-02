@@ -63,7 +63,7 @@
 
 <c:if test="${!empty pageContext.request.userPrincipal}">
     <div>
-        <form action="<%= request.getContextPath() %>/market/buy?id=${market.id}" method="post">
+        <form action="<%= request.getContextPath() %>/market/buy?id=${market.marketId}${empty param.rev ? "" : "&rev=true"}" method="post">
             <h3>Acheter des titres</h3>
             <p>
                 <label for="nb_stock">Quantité</label>

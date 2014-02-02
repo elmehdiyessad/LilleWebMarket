@@ -2,9 +2,11 @@ package framework;
 
 
 import java.lang.reflect.Method;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 
 public abstract class Entity
 {
+    public static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
+
     private HashMap<Method, String> getSetters()
     {
         HashMap<Method, String> setters = new HashMap<Method, String>();
@@ -39,9 +45,30 @@ public abstract class Entity
 
     public void hydrate(HttpServletRequest request) throws Exception
     {
-        for(Entry<Method, String> setter : getSetters().entrySet())
-            try {
-                setter.getKey().invoke(this, request.getParameter(setter.getValue()));
-            } catch(Exception e){}
+        for(Entry<Method, String> setter : getSetters().entrySet()){
+            //try {
+                Class<?> paramType = setter.getKey().getParameterTypes()[0];
+                if(request.getParameter(setter.getValue()) != null){
+                    setter.getKey().invoke(
+                        this,
+                        paramType.cast(stringToObject(request.getParameter(setter.getValue()), paramType))
+                    );
+                }
+            /*} catch(Exception e){
+                throw new Exception(setter.getValue());
+            }/**/
+        }
+    }
+
+    public static Object stringToObject(String string, Class<?> paramType) throws Exception
+    {
+        if(Boolean.class.equals(paramType))
+            return Boolean.valueOf(string);
+        else if(Integer.class.equals(paramType))
+            return Integer.valueOf(string);
+        else if(Date.class.equals(paramType))
+            return formatter.parse(string);
+
+        return string;
     }
 }

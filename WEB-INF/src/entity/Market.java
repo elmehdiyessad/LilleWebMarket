@@ -1,7 +1,6 @@
 package src.entity;
 
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,9 +10,7 @@ import framework.Entity;
 
 public class Market extends Entity
 {
-    public static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-    protected int    id;
+    protected int    marketId;
     protected String title;
     protected String titleRev;
     protected Date   term;
@@ -27,8 +24,8 @@ public class Market extends Entity
 
 
 
-    public int getId() {
-        return this.id;
+    public Integer getMarketId() {
+        return this.marketId;
     }
 
     public String getTitle() {
@@ -47,8 +44,8 @@ public class Market extends Entity
         return this.stocks;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setMarketId(Integer marketId) {
+        this.marketId = marketId;
     }
 
     public void setTitle(String title) {
@@ -61,10 +58,6 @@ public class Market extends Entity
 
     public void setTerm(Date term) {
         this.term = term;
-    }
-
-    public void setTerm(String term) throws Exception {
-        this.term = formatter.parse(term);
     }
 
     public void setStocks(ArrayList<UserStock> stocks) {

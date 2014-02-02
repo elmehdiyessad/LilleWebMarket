@@ -40,7 +40,7 @@ CREATE TABLE lwm_user (
 -------------------------------------------------
 CREATE TABLE lwm_user_infos (
     login       TEXT        PRIMARY KEY
-                            REFERENCES  lwm_user(login) ON DELETE CASCADE  ON UPDATE CASCADE,
+                            REFERENCES  lwm_user(login)         ON DELETE CASCADE  ON UPDATE CASCADE,
     role        TEXT        NOT NULL,
     cash        INTEGER     NOT NULL    DEFAULT 10000   CHECK (cash > 0)
 );
@@ -51,7 +51,7 @@ CREATE TABLE lwm_user_infos (
 --- Crée la table des marchés
 -------------------------------------------------
 CREATE TABLE lwm_market (
-    id          SERIAL      PRIMARY KEY,
+    market_id   SERIAL      PRIMARY KEY,
     title       TEXT        NOT NULL,
     title_rev   TEXT        NOT NULL,
     term        TIMESTAMP   NOT NULL
@@ -64,16 +64,15 @@ CREATE TABLE lwm_market (
 -------------------------------------------------
 CREATE TYPE ETAT AS ENUM ('BUY', 'SELL');
 CREATE TABLE lwm_user_stock (
-    login       TEXT        REFERENCES  lwm_user(login) ON DELETE CASCADE  ON UPDATE CASCADE,
-    market_id   INTEGER     REFERENCES  lwm_market(id)  ON DELETE CASCADE  ON UPDATE CASCADE,
+    stock_id    SERIAL    PRIMARY KEY,
+    login       TEXT        REFERENCES  lwm_user(login)         ON DELETE CASCADE  ON UPDATE CASCADE,
+    market_id   INTEGER     REFERENCES  lwm_market(market_id)   ON DELETE CASCADE  ON UPDATE CASCADE,
     nb_stock    INTEGER     NOT NULL    CHECK (nb_stock > 0),
     nb_sold     INTEGER     NOT NULL    CHECK (nb_sold >= 0),
     price       INTEGER     NOT NULL    CHECK (price > 0),
     assertion   BOOLEAN     NOT NULL    DEFAULT TRUE,
     creation    TIMESTAMP   NOT NULL    DEFAULT CURRENT_TIMESTAMP,
-    buy_or_sell ETAT        NOT NULL,
-
-    PRIMARY KEY (login, market_id, creation)
+    buy_or_sell ETAT        NOT NULL
 );
 
 
@@ -82,7 +81,7 @@ CREATE TABLE lwm_user_stock (
 --- Crée la table des variations d'un marché
 -------------------------------------------------
 CREATE TABLE lwm_variations_market (
-    market_id   INTEGER     REFERENCES  lwm_market(id)   ON DELETE CASCADE  ON UPDATE CASCADE,
+    market_id   INTEGER     REFERENCES  lwm_market(market_id)   ON DELETE CASCADE  ON UPDATE CASCADE,
     instant     TIMESTAMP   NOT NULL,
     value       INTEGER     NOT NULL,
 

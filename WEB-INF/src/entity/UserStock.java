@@ -14,6 +14,7 @@ enum UserStockState {
 
 public class UserStock extends Entity
 {
+    protected int stockId;
     protected String login;
     protected int marketId;
     protected int nbStock;
@@ -32,27 +33,32 @@ public class UserStock extends Entity
 
 
 
+
+    public Integer getStockId() {
+        return this.stockId;
+    }
+
     public String getLogin() {
         return this.login;
     }
 
-    public int getMarketId() {
+    public Integer getMarketId() {
         return this.marketId;
     }
 
-    public int getNbStock() {
+    public Integer getNbStock() {
         return this.nbStock;
     }
 
-    public int getNbSold() {
+    public Integer getNbSold() {
         return this.nbSold;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return this.price;
     }
 
-    public boolean getAssertion() {
+    public Boolean getAssertion() {
         return this.assertion;
     }
 
@@ -64,32 +70,36 @@ public class UserStock extends Entity
         return this.buyOrSell.name();
     }
 
+    public void setStockId(Integer stockId) {
+        this.stockId = stockId;
+    }
+
     public void setLogin(String login) {
         this.login = login;
     }
 
-    public void setMarketId(int marketId) {
+    public void setMarketId(Integer marketId) {
         this.marketId = marketId;
     }
 
-    public void setNbStock(int nbStock) {
+    public void setNbStock(Integer nbStock) {
         this.nbStock = nbStock;
     }
 
-    public void setNbSold(int nbSold) {
+    public void setNbSold(Integer nbSold) {
         this.nbSold = nbSold;
     }
 
-    public void addNbSold(int nbSoldToAdd)
+    public void addNbSold(Integer nbSoldToAdd)
     {
         this.nbSold += nbSoldToAdd;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public void setAssertion(boolean assertion) {
+    public void setAssertion(Boolean assertion) {
         this.assertion = assertion;
     }
 

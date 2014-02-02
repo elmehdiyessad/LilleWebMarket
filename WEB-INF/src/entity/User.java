@@ -35,7 +35,7 @@ public class User extends Entity
         return this.lastName;
     }
 
-    public int getCash() {
+    public Integer getCash() {
         return this.cash;
     }
 
@@ -55,18 +55,8 @@ public class User extends Entity
         this.lastName = lastName;
     }
 
-    public void setCash(int cash) {
+    public void setCash(Integer cash) {
         this.cash = cash;
-    }
-
-    public void addCash(int cashToAdd)
-    {
-        this.cash += cashToAdd;
-    }
-
-    public void subCash(int cashToSub)
-    {
-        this.cash -= cashToSub;
     }
 
 

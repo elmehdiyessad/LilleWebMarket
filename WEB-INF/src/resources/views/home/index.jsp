@@ -23,7 +23,7 @@
         <c:forEach items="${markets}" var="m">
             <tr>
                 <td>
-                    <a href="<%= request.getContextPath() %>/market/show?id=${m.id}">${m.title}</a>
+                    <a href="<%= request.getContextPath() %>/market/show?id=${m.marketId}">${m.title}</a>
                 </td>
                 <td class="center">
                     <time class="endtime">${m.term}</time>
