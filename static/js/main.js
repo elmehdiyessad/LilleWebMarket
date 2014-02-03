@@ -8,7 +8,7 @@ for(var i = 0; i < charts.length; i++){
 
     var graph = new Rickshaw.Graph( {
         element: charts.item(i),
-        height: 150,
+        height: 120,
         series: [
             {
                 color: '#0AA699',
