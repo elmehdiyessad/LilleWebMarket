@@ -61,5 +61,13 @@
             </div>
         </footer>
     </div>
+
+
+
+
+    <script src="<%= request.getContextPath() %>/static/js/d3.js"></script>
+    <script src="<%= request.getContextPath() %>/static/js/d3.layout.js"></script>
+    <script src="<%= request.getContextPath() %>/static/js/rickshaw.js"></script>
+    <script src="<%= request.getContextPath() %>/static/js/main.js"></script>
 </body>
 </html>
