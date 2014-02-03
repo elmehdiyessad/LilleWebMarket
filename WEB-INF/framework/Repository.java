@@ -17,6 +17,8 @@ public abstract class Repository<T extends Entity>
 
 
 
+    public abstract Object create(T entity) throws Exception;
+
     public String getQuery() throws Exception
     {
         return
@@ -40,7 +42,8 @@ public abstract class Repository<T extends Entity>
     public T getSingleResult(ResultSet rs) throws Exception
     {
         rs.beforeFirst();
-        rs.next();
+        if(!rs.next())
+            throw new Exception("Aucun résultat");
 
         T entity = createEntity(rs);
 

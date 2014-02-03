@@ -1,6 +1,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 
 <html>
 <head>
@@ -50,6 +50,7 @@
                     </c:if>
                     <c:if test="${empty pageContext.request.userPrincipal}">
                         <a href="<%= request.getContextPath() %>/security/login" class="login">Connexion</a>
+                        <a href="<%= request.getContextPath() %>/security/register" class="login">Inscription</a>
                     </c:if>
                 </div>
             </div>

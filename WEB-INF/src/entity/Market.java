@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import framework.Entity;
+import framework.Validator;
 
 
 
@@ -18,49 +19,82 @@ public class Market extends Entity
 
 
 
-    public Market(){
+    public Market()
+    {
         stocks = new ArrayList<UserStock>();
     }
 
 
 
-    public Integer getMarketId() {
+    public Validator validate()
+    {
+        Validator v = new Validator();
+
+        if(Validator.isBlank(title))
+            v.addError("title", "Ce champ est obligatoire");
+        else if(!Validator.hasMinLength(title, 5))
+            v.addError("title", "Ce titre est trop court");
+
+        if(Validator.isBlank(titleRev))
+            v.addError("titleRev", "Ce champ est obligatoire");
+        else if(!Validator.hasMinLength(titleRev, 5))
+            v.addError("titleRev", "Ce titre est trop court");
+
+        if(term.before(new Date()))
+            v.addError("term", "L'échéance doit être future à aujourd'hui");
+
+        return v;
+    }
+
+
+
+    public Integer getMarketId()
+    {
         return this.marketId;
     }
 
-    public String getTitle() {
+    public String getTitle()
+    {
         return this.title;
     }
 
-    public String getTitleRev() {
+    public String getTitleRev()
+    {
         return this.titleRev;
     }
 
-    public Date getTerm() {
+    public Date getTerm()
+    {
         return this.term;
     }
 
-    public ArrayList<UserStock> getStocks() {
+    public ArrayList<UserStock> getStocks()
+    {
         return this.stocks;
     }
 
-    public void setMarketId(Integer marketId) {
+    public void setMarketId(Integer marketId)
+    {
         this.marketId = marketId;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(String title)
+    {
         this.title = title;
     }
 
-    public void setTitleRev(String titleRev) {
+    public void setTitleRev(String titleRev)
+    {
         this.titleRev = titleRev;
     }
 
-    public void setTerm(Date term) {
+    public void setTerm(Date term)
+    {
         this.term = term;
     }
 
-    public void setStocks(ArrayList<UserStock> stocks) {
+    public void setStocks(ArrayList<UserStock> stocks)
+    {
         this.stocks = stocks;
     }
 

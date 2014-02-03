@@ -53,4 +53,35 @@ public class UserRepository extends Repository<User>
 
         ps.execute();
     }
+
+    /**
+     * Crée un nouvel utilisateur
+     *
+     * @param u L'utilisateur à créer
+     * @return Login de l'utilisateur créé
+     */
+    public Object create(User u) throws Exception
+    {
+        /*
+        PreparedStatement ps = prepareStatement(
+            "INSERT INTO " + getTableName() + " (login, market_id, nb_stock, nb_sold, price, assertion, buy_or_sell)" +
+            "VALUES (?, ?, ?, ?, ?, ?, ?::ETAT) " +
+            "RETURNING login"
+        );
+
+        ps.setString(1, us.getLogin());
+        ps.setInt(2, us.getMarketId());
+        ps.setInt(3, us.getNbStock());
+        ps.setInt(4, us.getNbSold());
+        ps.setInt(5, us.getPrice());
+        ps.setBoolean(6, us.getAssertion());
+        ps.setString(7, us.getBuyOrSell());
+
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+
+        return rs.getString(1);
+        */
+        return null;
+    }
 }

@@ -51,7 +51,6 @@ public abstract class Controller extends HttpServlet
 
             request.setAttribute("title", action.replace("([A-Z])", " $2"));
             request.setAttribute("flashBag", (HashMap<String, String>) session.getAttribute("flashBag"));
-
             session.setAttribute("flashBag", new HashMap<String, String>());
 
             Method method = this.getClass().getMethod(action + "Action", HttpServletRequest.class, HttpServletResponse.class);
@@ -99,6 +98,13 @@ public abstract class Controller extends HttpServlet
     protected void addFlash(HttpServletRequest request, String type, String message)
     {
         ((HashMap<String, String>) request.getSession(true).getAttribute("flashBag")).put(type, message);
+    }
+
+    protected void flushFlashBag(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession(true);
+        request.setAttribute("flashBag", (HashMap<String, String>) session.getAttribute("flashBag"));
+        session.setAttribute("flashBag", new HashMap<String, String>());
     }
 
 

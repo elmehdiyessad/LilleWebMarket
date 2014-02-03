@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import framework.Controller;
+import framework.Validator;
 
 import src.entity.Market;
 import src.entity.MarketRepository;
@@ -40,7 +41,7 @@ public class MarketController extends Controller
         if(request.getMethod().equals("POST")){
             Market m = new Market();
             m.hydrate(request);
-            int id = getRepository(request).create(m);
+            int id = (Integer) getRepository(request).create(m);
             addFlash(
                 request,
                 "success",
@@ -70,52 +71,63 @@ public class MarketController extends Controller
 
             // Récupérer les valeurs du formulaire
             stock.hydrate(request);
+            Validator v = stock.validate();
 
-            // Récupérer les Repository nécessaires
-            UserRepository userRepo = ((UserRepository) getManager(request).getRepository("User"));
-            UserStockRepository stockRepo = ((UserStockRepository) getManager(request).getRepository("UserStock"));
+            if(v.isValid()){
 
-            // Rechercher les UserStock inverses dont le prix est inférieur au prix de l'UserStock en création
-            ArrayList<UserStock> purchasable = stockRepo.findPurchasable(marketId, stock.getAssertion(), stock.getPrice(), user.getLogin());
+                // Récupérer les Repository nécessaires
+                UserRepository userRepo = ((UserRepository) getManager(request).getRepository("User"));
+                UserStockRepository stockRepo = ((UserStockRepository) getManager(request).getRepository("UserStock"));
 
-            int qty = 0;
-            int cashVariation = 0;
+                // Rechercher les UserStock inverses dont le prix est inférieur au prix de l'UserStock en création
+                ArrayList<UserStock> purchasable = stockRepo.findPurchasable(marketId, stock.getAssertion(), stock.getPrice(), user.getLogin());
 
-            // Pour chaque UserStock capable de vendre au prix demandé
-            for(UserStock us : purchasable){
-                if(stock.getNbStock() - stock.getNbSold() <= 0)
-                    break;
+                int qty = 0;
+                int cashVariation = 0;
 
-                // Augmenter la valeur nbSold du UserStock débiteur d'autant que possible
-                qty = us.getNbStock() - us.getNbSold();
-                if(qty > stock.getNbStock() - stock.getNbSold())
-                    qty = stock.getNbStock() - stock.getNbSold();
-                stockRepo.addToNbSold(us.getStockId(), qty);
+                // Pour chaque UserStock capable de vendre au prix demandé
+                for(UserStock us : purchasable){
+                    if(stock.getNbStock() - stock.getNbSold() <= 0)
+                        break;
 
-                // Augmenter la valeur nbBuy du UserStock en création de cette même valeur
-                stock.addNbSold(qty);
+                    // Augmenter la valeur nbSold du UserStock débiteur d'autant que possible
+                    qty = us.getNbStock() - us.getNbSold();
+                    if(qty > stock.getNbStock() - stock.getNbSold())
+                        qty = stock.getNbStock() - stock.getNbSold();
+                    stockRepo.addToNbSold(us.getStockId(), qty);
 
-                // Retirer price * cette valeur au cash de l'User
-                cashVariation -= qty * us.getPrice();
+                    // Augmenter la valeur nbBuy du UserStock en création de cette même valeur
+                    stock.addNbSold(qty);
 
-                // Retirer price * cette valeur au cash de l'acheteur inverse
-                userRepo.addToCash(us.getLogin(), -qty * us.getPrice());
+                    // Retirer price * cette valeur au cash de l'User
+                    cashVariation -= qty * us.getPrice();
+
+                    // Retirer price * cette valeur au cash de l'acheteur inverse
+                    userRepo.addToCash(us.getLogin(), -qty * us.getPrice());
+                }
+
+                // Mettre à jour le cash de l'User
+                userRepo.addToCash(user.getLogin(), cashVariation);
+
+                // Sauvegarder le nouvel UserStock
+                stockRepo.create(stock);
+
+                // Afficher un message de confirmation
+                int diff = stock.getNbStock() - stock.getNbSold();
+                addFlash(
+                    request,
+                    "success",
+                    "Vous avez acheté " + stock.getNbStock() + " titre" + ((stock.getNbStock() > 1) ? "s" : "") + " " + (diff > 0 ? "(dont " + diff + " en attente) " : "") +
+                        "pour un total maximal de " + (stock.getNbStock() * stock.getPrice()) + "€"
+                );
+            } else {
+                request.setAttribute("errors", v);
+                addFlash(
+                    request,
+                    "error",
+                    "Le formulaire contient des erreurs"
+                );
             }
-
-            // Mettre à jour le cash de l'User
-            userRepo.addToCash(user.getLogin(), cashVariation);
-
-            // Sauvegarder le nouvel UserStock
-            stockRepo.create(stock);
-
-            // Afficher un message de confirmation
-            int diff = stock.getNbStock() - stock.getNbSold();
-            addFlash(
-                request,
-                "success",
-                "Vous avez acheté " + stock.getNbStock() + " titre" + ((stock.getNbStock() > 1) ? "s" : "") + " " + (diff > 0 ? "(dont " + diff + " en attente) " : "") +
-                    "pour un total maximal de " + (stock.getNbStock() * stock.getPrice()) + "€"
-            );
         }
 
         // Rediriger vers la page du marché

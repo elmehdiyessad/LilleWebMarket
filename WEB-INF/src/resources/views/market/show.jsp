@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page pageEncoding="UTF-8" %>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 
 <ul class="actions">
     <li><a href="<%= request.getContextPath() %>/market/show?id=${param.id}${empty param.rev ? "&rev=true" : ""}">Marché inverse</a></li>
@@ -65,14 +65,10 @@
     <div>
         <form action="<%= request.getContextPath() %>/market/buy?id=${market.marketId}${empty param.rev ? "" : "&rev=true"}" method="post">
             <h3>Acheter des titres</h3>
-            <p>
-                <label for="nb_stock">Quantité</label>
-                <input type="number" name="nb_stock" id="nb_stock">
-            </p>
-            <p>
-                <label for="price">Prix</label>
-                <input type="number" name="price" id="price">
-            </p>
+
+            <f:field type="number" label="Quantité" name="nb_stock" required="true"/>
+            <f:field type="number" label="Prix" name="price" required="true"/>
+
             <p>
                 <input type="submit" value="Acheter">
             </p>

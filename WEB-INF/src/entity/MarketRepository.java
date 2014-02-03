@@ -71,7 +71,7 @@ public class MarketRepository extends Repository<Market>
      * @param m Le marché à créer
      * @return Id du marché créé
      */
-    public Integer create(Market m) throws Exception
+    public Object create(Market m) throws Exception
     {
         PreparedStatement ps = prepareStatement(
             "INSERT INTO " + getTableName() + " (title, title_rev, term)" +

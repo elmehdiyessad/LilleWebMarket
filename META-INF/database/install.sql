@@ -54,7 +54,8 @@ CREATE TABLE lwm_market (
     market_id   SERIAL      PRIMARY KEY,
     title       TEXT        NOT NULL,
     title_rev   TEXT        NOT NULL,
-    term        TIMESTAMP   NOT NULL
+    term        TIMESTAMP   NOT NULL,
+    login       TEXT        REFERENCES  lwm_user(login)         ON DELETE CASCADE  ON UPDATE CASCADE
 );
 
 

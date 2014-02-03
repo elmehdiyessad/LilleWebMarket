@@ -1,4 +1,12 @@
 #!/bin/bash
 
-javac WEB-INF/framework/*.java -cp $CLASSPATH:WEB-INF/classes/ -d WEB-INF/classes/
-javac WEB-INF/src/**/*.java -cp $CLASSPATH:WEB-INF/classes/ -d WEB-INF/classes/
+rm -rf WEB-INF/classes/*
+
+javac WEB-INF/framework/Validator.java      -cp $CLASSPATH:WEB-INF/classes/ -d WEB-INF/classes/
+javac WEB-INF/framework/Entity.java         -cp $CLASSPATH:WEB-INF/classes/ -d WEB-INF/classes/
+javac WEB-INF/framework/Repository.java     -cp $CLASSPATH:WEB-INF/classes/ -d WEB-INF/classes/
+javac WEB-INF/src/entity/*.java             -cp $CLASSPATH:WEB-INF/classes/ -d WEB-INF/classes/
+javac WEB-INF/framework/EntityManager.java  -cp $CLASSPATH:WEB-INF/classes/ -d WEB-INF/classes/
+javac WEB-INF/framework/Controller.java     -cp $CLASSPATH:WEB-INF/classes/ -d WEB-INF/classes/
+javac WEB-INF/src/**/*.java                 -cp $CLASSPATH:WEB-INF/classes/ -d WEB-INF/classes/
+javac WEB-INF/src/**/**/*.java              -cp $CLASSPATH:WEB-INF/classes/ -d WEB-INF/classes/

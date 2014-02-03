@@ -71,12 +71,14 @@ public class UserStockRepository extends Repository<UserStock>
      * Crée un nouveau titre
      *
      * @param us Le titre à créer
+     * @return Id du stock créé
      */
-    public void create(UserStock us) throws Exception
+    public Object create(UserStock us) throws Exception
     {
         PreparedStatement ps = prepareStatement(
             "INSERT INTO " + getTableName() + " (login, market_id, nb_stock, nb_sold, price, assertion, buy_or_sell)" +
-            "VALUES (?, ?, ?, ?, ?, ?, ?::etat) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?::etat) " +
+            "RETURNING stock_id"
         );
 
         ps.setString(1, us.getLogin());
@@ -87,6 +89,9 @@ public class UserStockRepository extends Repository<UserStock>
         ps.setBoolean(6, us.getAssertion());
         ps.setString(7, us.getBuyOrSell());
 
-        ps.execute();
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+
+        return rs.getInt(1);
     }
 }

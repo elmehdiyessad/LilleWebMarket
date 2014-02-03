@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletRequest;
 
+import framework.Validator;
+
 
 
 public abstract class Entity
@@ -17,23 +19,8 @@ public abstract class Entity
     public static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
+    public abstract Validator validate();
 
-    private HashMap<Method, String> getSetters()
-    {
-        HashMap<Method, String> setters = new HashMap<Method, String>();
-        Method[] methods = this.getClass().getMethods();
-
-        for(Method method : methods) {
-            if(method.getName().substring(0, 3).equals("set")){
-                setters.put(
-                    method,
-                    method.getName().substring(3).replaceAll("(.)([A-Z])", "$1_$2").toLowerCase()
-                );
-            }
-        }
-
-        return setters;
-    }
 
     public void hydrate(ResultSet rs) throws Exception
     {
@@ -70,5 +57,22 @@ public abstract class Entity
             return formatter.parse(string);
 
         return string;
+    }
+
+    private HashMap<Method, String> getSetters()
+    {
+        HashMap<Method, String> setters = new HashMap<Method, String>();
+        Method[] methods = this.getClass().getMethods();
+
+        for(Method method : methods) {
+            if(method.getName().substring(0, 3).equals("set")){
+                setters.put(
+                    method,
+                    method.getName().substring(3).replaceAll("(.)([A-Z])", "$1_$2").toLowerCase()
+                );
+            }
+        }
+
+        return setters;
     }
 }

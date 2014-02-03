@@ -1,14 +1,14 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 
+
+
+<ul class="actions">
+    <li><a href="<%= request.getContextPath() %>/security/register">Créer un compte</a></li>
+</ul>
+
 <form action="<%= response.encodeURL("j_security_check") %>" method="post">
-    <p>
-        <label for="login">Nom d'utilisateur</label>
-        <input type="text" name="j_username" id="login">
-    </p>
-    <p>
-        <label for="password">Mot de passe</label>
-        <input type="password" name="j_password" id="password">
-    </p>
+    <f:field label="Nom d'utilisateur" name="j_username" required="true"/>
+    <f:field label="Mot de passe" name="j_password" required="true" type="password"/>
 
     <p class="submit">
         <input type="submit" value="Connexion">

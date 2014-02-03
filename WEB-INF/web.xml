@@ -32,6 +32,19 @@
 
 
 
+    <jsp-config>
+        <jsp-property-group>
+            <url-pattern>*.jsp</url-pattern>
+            <include-prelude>/WEB-INF/taglibs.jsp</include-prelude>
+        </jsp-property-group>
+        <taglib>
+           <taglib-uri>form</taglib-uri>
+           <taglib-location>/WEB-INF/tags/form.tld</taglib-location>
+        </taglib>
+    </jsp-config>
+
+
+
     <servlet>
         <servlet-name>HomeController</servlet-name>
         <servlet-class>src.controller.HomeController</servlet-class>
@@ -58,6 +71,7 @@
         <servlet-name>SecurityController</servlet-name>
         <url-pattern>/login</url-pattern>
         <url-pattern>/security/login</url-pattern>
+        <url-pattern>/security/register</url-pattern>
         <url-pattern>/security/logout</url-pattern>
     </servlet-mapping>
 
@@ -85,7 +99,7 @@
         <realm-name>realm-database</realm-name>
         <form-login-config>
             <form-login-page>/login</form-login-page>
-            <form-error-page>/login?error</form-error-page>
+            <form-error-page>/login?error=true</form-error-page>
         </form-login-config>
     </login-config>
 

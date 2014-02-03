@@ -4,6 +4,7 @@ package src.entity;
 import java.util.Date;
 
 import framework.Entity;
+import framework.Validator;
 
 
 
@@ -26,67 +27,96 @@ public class UserStock extends Entity
 
 
 
-    public UserStock(){
+    public UserStock()
+    {
         setCreationDate(new Date());
         setBuyOrSell("BUY");
     }
 
 
 
+    public Validator validate()
+    {
+        Validator v = new Validator();
 
-    public Integer getStockId() {
+        if(nbStock <= 0)
+            v.addError("nb_stock", "Ce nombre doit être positif");
+
+        if(price <= 0 || price >= 100)
+            v.addError("price", "Le prix doit être positif et strictement inférieur à 100");
+
+        return v;
+    }
+
+
+
+    public Integer getStockId()
+    {
         return this.stockId;
     }
 
-    public String getLogin() {
+    public String getLogin()
+    {
         return this.login;
     }
 
-    public Integer getMarketId() {
+    public Integer getMarketId()
+    {
         return this.marketId;
     }
 
-    public Integer getNbStock() {
+    public Integer getNbStock()
+    {
         return this.nbStock;
     }
 
-    public Integer getNbSold() {
+    public Integer getNbSold()
+    {
         return this.nbSold;
     }
 
-    public Integer getPrice() {
+    public Integer getPrice()
+    {
         return this.price;
     }
 
-    public Boolean getAssertion() {
+    public Boolean getAssertion()
+    {
         return this.assertion;
     }
 
-    public Date getCreationDate() {
+    public Date getCreationDate()
+    {
         return this.creationDate;
     }
 
-    public String getBuyOrSell() {
+    public String getBuyOrSell()
+    {
         return this.buyOrSell.name();
     }
 
-    public void setStockId(Integer stockId) {
+    public void setStockId(Integer stockId)
+    {
         this.stockId = stockId;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(String login)
+    {
         this.login = login;
     }
 
-    public void setMarketId(Integer marketId) {
+    public void setMarketId(Integer marketId)
+    {
         this.marketId = marketId;
     }
 
-    public void setNbStock(Integer nbStock) {
+    public void setNbStock(Integer nbStock)
+    {
         this.nbStock = nbStock;
     }
 
-    public void setNbSold(Integer nbSold) {
+    public void setNbSold(Integer nbSold)
+    {
         this.nbSold = nbSold;
     }
 
@@ -95,19 +125,23 @@ public class UserStock extends Entity
         this.nbSold += nbSoldToAdd;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Integer price)
+    {
         this.price = price;
     }
 
-    public void setAssertion(Boolean assertion) {
+    public void setAssertion(Boolean assertion)
+    {
         this.assertion = assertion;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(Date creationDate)
+    {
         this.creationDate = creationDate;
     }
 
-    public void setBuyOrSell(String buyOrSell) {
+    public void setBuyOrSell(String buyOrSell)
+    {
         this.buyOrSell = UserStockState.valueOf(buyOrSell.trim().toUpperCase());
     }
 }
