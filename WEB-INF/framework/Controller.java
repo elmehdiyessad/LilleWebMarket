@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.HashMap;
 
 import javax.naming.Context;
@@ -50,8 +51,7 @@ public abstract class Controller extends HttpServlet
             ;
 
             request.setAttribute("title", action.replace("([A-Z])", " $2"));
-            request.setAttribute("flashBag", (HashMap<String, String>) session.getAttribute("flashBag"));
-            session.setAttribute("flashBag", new HashMap<String, String>());
+            flushFlashBag(request);
 
             Method method = this.getClass().getMethod(action + "Action", HttpServletRequest.class, HttpServletResponse.class);
             method.invoke(this, request, response);
@@ -103,8 +103,14 @@ public abstract class Controller extends HttpServlet
     protected void flushFlashBag(HttpServletRequest request)
     {
         HttpSession session = request.getSession(true);
-        request.setAttribute("flashBag", (HashMap<String, String>) session.getAttribute("flashBag"));
+        request.setAttribute("flashBag", (Map<String, String>) session.getAttribute("flashBag"));
         session.setAttribute("flashBag", new HashMap<String, String>());
+    }
+
+    protected void keepFlashBag(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession(true);
+        session.setAttribute("flashBag", (Map<String, String>) request.getAttribute("flashBag"));
     }
 
 

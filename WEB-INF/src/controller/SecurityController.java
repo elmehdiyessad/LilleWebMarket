@@ -1,6 +1,8 @@
 package src.controller;
 
 
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,34 +20,29 @@ public class SecurityController extends Controller
     public void indexAction(HttpServletRequest request, HttpServletResponse response)
     {
         if(request.getParameter("error") != null)
-            addFlash(
-                request,
-                "error",
-                "Identifiants incorrects"
-            );
+            addFlash(request, "error", "Identifiants incorrects");
 
     	if(request.getUserPrincipal() != null){
             addFlash(request, "error", "Vous êtes déjà connecté !");
     		redirect(response, request.getContextPath());
-        } else if(request.getDispatcherType() == javax.servlet.DispatcherType.FORWARD)
+        } else if(request.getDispatcherType() == javax.servlet.DispatcherType.FORWARD){
             redirect(response, request.getContextPath() + "/login");
-        else
+        } else {
+            request.setAttribute("bodyClass", "w50");
         	render("security:login", request, response, "Connexion");
+        }
     }
 
     public void loginAction(HttpServletRequest request, HttpServletResponse response)
     {
+        addFlash(request, "success", "Bienvenue " + ((User) request.getAttribute("user")).getFirstName() + " !");
         redirect(response, request.getContextPath());
     }
 
     public void registerAction(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         if(request.getUserPrincipal() != null){
-            addFlash(
-                request,
-                "error",
-                "Déconnectez-vous pour créer un nouveau compte"
-            );
+            addFlash(request, "error", "Déconnectez-vous pour créer un nouveau compte");
             redirect(response, request.getContextPath());
         } else if(request.getMethod().equals("POST")) {
             User user = new User();
@@ -79,10 +76,13 @@ public class SecurityController extends Controller
                     "Le formulaire contient des erreurs"
                 );
                 flushFlashBag(request);
+                request.setAttribute("bodyClass", "w50");
                 render("security:register", request, response, "Inscription");
             }
-        } else
+        } else {
+            request.setAttribute("bodyClass", "w50");
             render("security:register", request, response, "Inscription");
+        }
     }
 
     public void logoutAction(HttpServletRequest request, HttpServletResponse response) throws Exception

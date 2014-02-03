@@ -2,9 +2,32 @@
    Base styles
    ========================================================================== */
 
-html {
-    color: #222;
-    background: #EEE;
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/robotocondensed-light-webfont.eot');
+    src: url('../fonts/robotocondensed-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/robotocondensed-light-webfont.woff') format('woff'),
+         url('../fonts/robotocondensed-light-webfont.ttf') format('truetype'),
+         url('../fonts/robotocondensed-light-webfont.svg#roboto_condensedlight') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/robotocondensed-regular-webfont.eot');
+    src: url('../fonts/robotocondensed-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/robotocondensed-regular-webfont.woff') format('woff'),
+         url('../fonts/robotocondensed-regular-webfont.ttf') format('truetype'),
+         url('../fonts/robotocondensed-regular-webfont.svg#roboto_condensedregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 html {
@@ -13,7 +36,8 @@ html {
 }
 
 body {
-    font-size: 16px;
+    font-size: 14px;
+    background: #E5E9EC;
 }
 
 ::-moz-selection {
@@ -57,11 +81,24 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+#header,
+h1,
+h2,
+h3 {
+    font-family: Roboto, Arial, sans-serif;
+    font-weight: 300;
+}
+
 h1,
 h2,
 h3 {
     color: #2c3e50;
-    font-weight: normal;
+}
+h2 {
+    font-size: 30px;
+}
+h3 {
+    font-size: 23px;
 }
 
 a {
@@ -82,104 +119,83 @@ a:focus {
 
 
 #header {
-    height: 120px;
-    background: #2980b9;
-    background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, .1), transparent);
-    box-shadow: rgba(0, 0, 0, .7) 0 0 13px;
+    height: 60px;
+    background: #FFF;
+    box-shadow: rgba(0, 0, 0, .1) 0 0 13px;
     border-bottom: 1px solid rgba(255, 255, 255, .5);
 }
 #header h1 {
     margin: 0;
-    color: #EEE;
-    line-height: 120px;
+    color: #999;
+    line-height: 60px;
     float: left;
+    text-transform: uppercase;
+    text-shadow: 0 0 1px rgba(0, 0, 0, .2);
 }
 #header h1 a {
-    color: #EEE;
+    color: #999;
     text-decoration: none;
 }
-#header .logbox {
-    position: relative;
-    margin-top: 20px;
-    float: right;
-    width: 350px;
-    height: 80px;
-    background: rgba(0, 0, 0, .1);
-    border-radius: 0 0 35px;
-    color: #FFF;
+#header h1 a .market {
+    font-weight: normal;
+    color: #222;
 }
 
 
-.avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 60px;
-    border: 2px solid rgba(255, 255, 255, .8);
-}
-.logbox .avatar {
+
+.logbox {
+    text-align: right;
     float: right;
-    margin: 8px 8px 0 0;
-}
-.logbox .login {
-    text-decoration: none;
-    color: #EEE;
-    display: block;
-    width: 50%;
-    float: left;
-    text-align: center;
-    margin-top: 28px;
+    font-size: 16px;
+    line-height: 16px;
+    padding-top: 10px;
 }
 .logbox .infos {
     float: left;
-    margin: 10px 0 0 15px;
-    color: #EEE;
-    width: calc(100% - 90px);
+    margin-right: 10px;
 }
-.logbox .pseudo {
+.logbox .name {
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+.logbox .last-name {
+    font-weight: normal;
+}
+.logbox .logout {
     display: block;
-    font-weight: bold;
+    float: right;
+    height: 40px;
+    width: 40px;
+    text-indent: -9999px;
+    text-align: left;
+    background-image: url("../images/logout.png");
+    transition: all .2s;
+    opacity: .5;
+    border-radius: 40px 10px 40px 40px;
 }
-.logbox .pseudo:after {
-    content: " ";
+.logbox .logout:hover,
+.logbox .logout:focus {
+    background-color: #DDD;
+    opacity: 1;
+}
+.logbox .login {
     display: block;
-    width: 102%;
-    height: 2px;
-    background: rgba(255, 255, 255, .8);
+    float: right;
+    height: 40px;
+    text-transform: uppercase;
+    color: #999;
+    font-size: 22px;
+    line-height: 40px;
+    padding: 0 20px;
+    transition: all .2s;
 }
-.logbox .cash {
-    position: absolute;
-    top: 10px;
-    right: 83px;
-    font-size: 14px;
-    text-align: right;
-    width: 120px;
+.logbox .login:hover,
+.logbox .login:focus {
+    background: #DDD;
+    color: #1B1E24;
+    text-decoration: none;
 }
-.logbox .def,
-.logbox .value {
-    display: inline-block;
-}
-.logbox .def {
-    width: 63%;
-    text-align: right;
-    padding-right: 5px;
-}
-.logbox .value {
-
-}
-.logbox ul {
-    margin: 5px 0 0;
-    padding: 0;
-    list-style: none;
-    font-size: 14px;
-    color: rgba(255, 255, 255, .8);
-    text-shadow: rgba(0, 0, 0, .3) 0 0 3px;
-}
-.logbox ul li {
-    float: left;
-    width: 50%;
-}
-
-
 
 
 
@@ -193,9 +209,10 @@ a:focus {
     padding: 13px 2%;
     margin-top: 10px;
     color: #FFF;
+    font-family: Roboto, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 300;
 }
-
-
 
 
 
@@ -204,60 +221,143 @@ a:focus {
     padding: 0;
     list-style: none;
     float: right;
-    margin-top: -50px;
+    margin-top: -65px;
 }
 .actions li {
     float: left;
     margin-left: 5px;
 }
-.actions a {
+.actions a,
+form button {
     display: block;
-    padding: 3px 10px;
+    padding: 7px 20px;
     color: #EEE;
-    background: rgba(0, 0, 0, .5);
+    font-size: 16px;
+    font-weight: 300;
+    font-family: Roboto, Arial, sans-serif;
+    background: #1B1E24;
     transition: background .15s;
+    text-transform: uppercase;
+    text-shadow: 0 0 2px rgba(0, 0, 0, .5);
 }
 .actions a:hover,
-.actions a:focus {
+.actions a:focus,
+form button:hover,
+form button:focus {
     text-decoration: none;
     background: rgba(0, 0, 0, .7);
 }
 
 
 
-table {
-    width: 100%;
-    border: 1px solid #95a5a6;
+.row {
     margin-bottom: 30px;
 }
+.row:after {
+    content: " ";
+    display: block;
+    width: 100%;
+    clear: both;
+}
+.box {
+    background: #FFF;
+    border: 1px solid #DDD;
+}
+.box-in {
+    padding: 15px 25px;
+}
+.w50 {
+    width: 50%;
+}
+.row .w50:first-child {
+    margin-right: 1%;
+}
+.row .w50:last-child:not(:first-child) {
+    margin-left: 1%;
+}
+.row .w50 {
+    width: 49%;
+}
+.row .w50 {
+    float: left;
+}
+
+
+
+table {
+    width: 100%;
+    font-size: 14px;
+}
+table tfoot {
+    display: none;
+}
 table caption {
-    height: 30px;
-    line-height: 30px;
-    background: #95a5a6;
+    height: 50px;
+    line-height: 50px;
     text-shadow: rgba(255, 255, 255, .7) 0 0 3px;
     color: #333;
     text-transform: uppercase;
+    text-align: left;
+    padding-left: 10px;
+    border-bottom: 1px solid #DDD;
+    font-size: 23px;
+    font-weight: 300;
+    font-family: Roboto, Arial, sans-serif;
 }
 table thead,
 table tfoot {
-    background: #bdc3c7;
-    color: #2c3e50;
+    text-align: left;
+    font-size: 13px;
+    color: #22262E;
 }
 table th {
-    font-weight: normal;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 table tr {
-    height: 30px;
+    height: 40px;
 }
-table tr:not(:last-child) {
-    border-bottom: 1px solid #CCC;
+table tbody tr {
+    border-top: 1px solid #DDD;
 }
-table td {
+table tbody tr:hover {
+    background: #EEE;
+}
+table td,
+table th {
     padding: 0 10px;
 }
-table td.center {
-    text-align: center;
+
+
+
+form label {
+    display: block;
+    color: #55606E;
+    line-height: 20px;
+    margin-bottom: 5px;
 }
+form input {
+    border: 1px solid #DDD;
+    padding: 6px 11px;
+    border-radius: 2px;
+    width: 100%;
+}
+.form-error {
+    font-size: 13px;
+    color: #C0392B;
+    padding-left: 1px;
+}
+form .submit {
+    height: 60px;
+    margin: 0;
+}
+form button {
+    margin-top: 24px;
+    border: 0;
+    float: right;
+}
+
+
 
 .positive {
     color: #27ae60;
@@ -270,9 +370,20 @@ table td.center {
 
 footer {
     margin-top: 50px;
-    border-top: 1px solid #777;
+    padding: 15px 0;
+    background: #1B1E24;
     text-align: center;
-    color: #777;
+    color: #999;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-family: Roboto, Arial, sans-serif;
+    font-weight: 300;
+}
+footer .market {
+    color: #CCC;
+}
+footer p {
+    margin: 0;
 }
 
 

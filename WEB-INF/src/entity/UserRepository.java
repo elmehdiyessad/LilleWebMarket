@@ -25,7 +25,8 @@ public class UserRepository extends Repository<User>
         PreparedStatement ps = prepareStatement(
             "SELECT * " +
             "FROM " + getTableName() + " AS u " +
-            "LEFT JOIN " + getTableName("UserInfos") + " AS ui ON u.login = ui.login " +
+            "LEFT JOIN " + getTableName("UserInfos") + " AS ui "
+                + "ON u.login = ui.login " +
             "WHERE u.login = ?"
         );
 
@@ -62,26 +63,32 @@ public class UserRepository extends Repository<User>
      */
     public Object create(User u) throws Exception
     {
-        /*
+        // Crée l'utilisateur
         PreparedStatement ps = prepareStatement(
-            "INSERT INTO " + getTableName() + " (login, market_id, nb_stock, nb_sold, price, assertion, buy_or_sell)" +
-            "VALUES (?, ?, ?, ?, ?, ?, ?::ETAT) " +
-            "RETURNING login"
+            "INSERT INTO " + getTableName() + " (login, password, first_name, last_name)" +
+            "VALUES (?, MD5(?), ?, ?) "
         );
 
-        ps.setString(1, us.getLogin());
-        ps.setInt(2, us.getMarketId());
-        ps.setInt(3, us.getNbStock());
-        ps.setInt(4, us.getNbSold());
-        ps.setInt(5, us.getPrice());
-        ps.setBoolean(6, us.getAssertion());
-        ps.setString(7, us.getBuyOrSell());
+        ps.setString(1, u.getLogin());
+        ps.setString(2, u.getPassword());
+        ps.setString(3, u.getFirstName());
+        ps.setString(4, u.getLastName());
 
-        ResultSet rs = ps.executeQuery();
-        rs.next();
+        ps.execute();
 
-        return rs.getString(1);
-        */
-        return null;
+
+        // Crée l'entrée qui défini les infos de l'User
+        ps = prepareStatement(
+            "INSERT INTO " + getTableName("UserInfos") + " (login, role)" +
+            "VALUES (?, ?) "
+        );
+
+        ps.setString(1, u.getLogin());
+        ps.setString(2, "user");
+
+        ps.execute();
+
+
+        return u.getLogin();
     }
 }

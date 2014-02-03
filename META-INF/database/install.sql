@@ -55,7 +55,7 @@ CREATE TABLE lwm_market (
     title       TEXT        NOT NULL,
     title_rev   TEXT        NOT NULL,
     term        TIMESTAMP   NOT NULL,
-    login       TEXT        REFERENCES  lwm_user(login)         ON DELETE CASCADE  ON UPDATE CASCADE
+    maker       TEXT        REFERENCES  lwm_user(login)         ON DELETE CASCADE  ON UPDATE CASCADE
 );
 
 

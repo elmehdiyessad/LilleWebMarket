@@ -28,12 +28,6 @@
             <name>required</name>
             <type>java.lang.Boolean</type>
         </attribute>
-        <attribute>
-            <name>placeholder</name>
-        </attribute>
-        <attribute>
-            <name>pattern</name>
-        </attribute>
         <dynamic-attributes>true</dynamic-attributes>
     </tag>
 </taglib>

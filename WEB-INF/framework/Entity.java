@@ -4,6 +4,7 @@ package framework;
 import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
@@ -33,17 +34,13 @@ public abstract class Entity
     public void hydrate(HttpServletRequest request) throws Exception
     {
         for(Entry<Method, String> setter : getSetters().entrySet()){
-            //try {
-                Class<?> paramType = setter.getKey().getParameterTypes()[0];
-                if(request.getParameter(setter.getValue()) != null){
-                    setter.getKey().invoke(
-                        this,
-                        paramType.cast(stringToObject(request.getParameter(setter.getValue()), paramType))
-                    );
-                }
-            /*} catch(Exception e){
-                throw new Exception(setter.getValue());
-            }/**/
+            Class<?> paramType = setter.getKey().getParameterTypes()[0];
+            if(request.getParameter(setter.getValue()) != null){
+                setter.getKey().invoke(
+                    this,
+                    paramType.cast(stringToObject(request.getParameter(setter.getValue()).trim(), paramType))
+                );
+            }
         }
     }
 
@@ -59,9 +56,9 @@ public abstract class Entity
         return string;
     }
 
-    private HashMap<Method, String> getSetters()
+    private Map<Method, String> getSetters()
     {
-        HashMap<Method, String> setters = new HashMap<Method, String>();
+        Map<Method, String> setters = new HashMap<Method, String>();
         Method[] methods = this.getClass().getMethods();
 
         for(Method method : methods) {

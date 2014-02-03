@@ -40,15 +40,35 @@ public class MarketController extends Controller
     {
         if(request.getMethod().equals("POST")){
             Market m = new Market();
-            m.hydrate(request);
-            int id = (Integer) getRepository(request).create(m);
-            addFlash(
-                request,
-                "success",
-                "Marché créé avec succès"
-            );
-            redirect(response, request.getContextPath() + "/market/show?id=" + id);
+
+            try {
+                m.hydrate(request);
+            } catch(java.text.ParseException e){}
+
+            Validator v = m.validate();
+
+            if(v.isValid()){
+                m.setMaker(((User) request.getAttribute("user")).getLogin());
+                int id = (Integer) getRepository(request).create(m);
+                addFlash(
+                    request,
+                    "success",
+                    "Marché créé avec succès"
+                );
+                redirect(response, request.getContextPath() + "/market/show?id=" + id);
+            } else {
+                request.setAttribute("bodyClass", "w50");
+                request.setAttribute("errors", v);
+                addFlash(
+                    request,
+                    "error",
+                    "Le formulaire contient des erreurs"
+                );
+                flushFlashBag(request);
+                render("market:create", request, response, "Créer un marché");
+            }
         } else {
+            request.setAttribute("bodyClass", "w50");
             render("market:create", request, response, "Créer un marché");
         }
     }

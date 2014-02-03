@@ -15,42 +15,24 @@
         <header id="header">
             <div class="wrapper">
                 <h1>
-                    <a href="<%= request.getContextPath() %>">LilleWebMarket</a>
+                    <a href="<%= request.getContextPath() %>">
+                        LilleWeb<span class="market">Market</span>
+                    </a>
                 </h1>
                 <div class="logbox">
                     <c:if test="${!empty pageContext.request.userPrincipal}">
-                        <img src="http://lorempicsum.com/futurama/60/60/6" class="avatar">
                         <div class="infos">
-                            <span class="pseudo">${user.firstName}</span>
-                            <div class="cash">
-                                <span class="value">Cash : ${user.cash}€</span>
+                            <div class="name">
+                                <span class="first-name">${user.firstName}</span>
+                                <span class="last-name">${user.lastName}</span>
                             </div>
-
-                            <!--
-                            <ul>
-                                <li>
-                                    <span class="def">Mes Bons</span>
-                                    <span class="value positive">??</span>
-                                </li>
-                                <li>
-                                    <span class="def">Valeur</span>
-                                    <span class="value">??</span>
-                                </li>
-                                <li>
-                                    <span class="def">Perf.</span>
-                                    <span class="value">??%</span>
-                                </li>
-                                <li>
-                                    <span class="def">Gain</span>
-                                    <span class="value">???</span>
-                                </li>
-                            </ul>
-                        	-->
+                            <span class="cash">Cash : ${user.cash}€</span>
                         </div>
+                        <a href="<%= request.getContextPath() %>/security/logout" class="logout">Deconnexion</a>
                     </c:if>
                     <c:if test="${empty pageContext.request.userPrincipal}">
-                        <a href="<%= request.getContextPath() %>/security/login" class="login">Connexion</a>
                         <a href="<%= request.getContextPath() %>/security/register" class="login">Inscription</a>
+                        <a href="<%= request.getContextPath() %>/security/login" class="login">Connexion</a>
                     </c:if>
                 </div>
             </div>
@@ -63,7 +45,8 @@
                         ${f.value}
                     </div>
                 </c:forEach>
-
+            </div>
+            <div class="wrapper ${bodyClass}">
                 <h2>${title}</h2>
 
                 <jsp:include page="${template}" flush="true"/>
@@ -73,7 +56,7 @@
         <footer>
             <div class="wrapper">
                 <p>
-                    LilleWebMarket - Projet web LP SIL DA2I - IUT A, Lille 1
+                    LilleWeb<span class="market">Market</span> - Projet web LP SIL DA2I - IUT A, Lille 1
                 </p>
             </div>
         </footer>

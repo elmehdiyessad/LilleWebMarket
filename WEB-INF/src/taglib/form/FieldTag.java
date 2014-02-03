@@ -48,7 +48,7 @@ public class FieldTag extends SimpleTagSupport implements DynamicAttributes
             if(required)
                 out.print(" required");
 
-            if(request.getParameter(name) != null)
+            if(request.getParameter(name) != null && !type.equals("password"))
                 out.print(" value=\"" + request.getParameter(name).trim() + "\"");
 
             for(Entry<String, String> attr : tagAttributes.entrySet())

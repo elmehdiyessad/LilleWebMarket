@@ -3,6 +3,7 @@ package src.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import framework.Entity;
 import framework.Validator;
@@ -15,7 +16,8 @@ public class Market extends Entity
     protected String title;
     protected String titleRev;
     protected Date   term;
-    protected ArrayList<UserStock> stocks;
+    protected String maker;
+    protected List<UserStock> stocks;
 
 
 
@@ -40,7 +42,9 @@ public class Market extends Entity
         else if(!Validator.hasMinLength(titleRev, 5))
             v.addError("titleRev", "Ce titre est trop court");
 
-        if(term.before(new Date()))
+        if(term == null)
+            v.addError("term", "La date renseignée est invalide");
+        else if(term.before(new Date()))
             v.addError("term", "L'échéance doit être future à aujourd'hui");
 
         return v;
@@ -68,7 +72,12 @@ public class Market extends Entity
         return this.term;
     }
 
-    public ArrayList<UserStock> getStocks()
+    public String getMaker()
+    {
+        return this.maker;
+    }
+
+    public List<UserStock> getStocks()
     {
         return this.stocks;
     }
@@ -93,7 +102,12 @@ public class Market extends Entity
         this.term = term;
     }
 
-    public void setStocks(ArrayList<UserStock> stocks)
+    public void setMaker(String maker)
+    {
+        this.maker = maker;
+    }
+
+    public void setStocks(List<UserStock> stocks)
     {
         this.stocks = stocks;
     }

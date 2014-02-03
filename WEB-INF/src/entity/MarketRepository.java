@@ -74,14 +74,15 @@ public class MarketRepository extends Repository<Market>
     public Object create(Market m) throws Exception
     {
         PreparedStatement ps = prepareStatement(
-            "INSERT INTO " + getTableName() + " (title, title_rev, term)" +
-            "VALUES (?, ?, ?) " +
+            "INSERT INTO " + getTableName() + " (title, title_rev, term, maker)" +
+            "VALUES (?, ?, ?, ?) " +
             "RETURNING market_id"
         );
 
         ps.setString(1, m.getTitle());
         ps.setString(2, m.getTitleRev());
         ps.setDate(3, new java.sql.Date(m.getTerm().getTime()));
+        ps.setString(4, m.getMaker());
 
         ResultSet rs = ps.executeQuery();
         rs.next();
