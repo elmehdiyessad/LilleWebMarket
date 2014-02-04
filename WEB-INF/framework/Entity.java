@@ -25,10 +25,15 @@ public abstract class Entity
 
     public void hydrate(ResultSet rs) throws Exception
     {
-        for(Entry<Method, String> setter : getSetters().entrySet())
+        for(Entry<Method, String> setter : getSetters().entrySet()){
+            Class<?> paramType = setter.getKey().getParameterTypes()[0];
             try {
-                setter.getKey().invoke(this, rs.getObject(setter.getValue()));
+                setter.getKey().invoke(
+                    this,
+                    paramType.cast(stringToObject(rs.getString(setter.getValue()), paramType))
+                );
             } catch(Exception e){}
+        }
     }
 
     public void hydrate(HttpServletRequest request) throws Exception

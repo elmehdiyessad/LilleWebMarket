@@ -14,7 +14,7 @@
 
 
 -------------------------------------------------
---- Crée de variations pour le marché n°1
+--- Crée des variations pour le marché n°1
 -------------------------------------------------
 INSERT INTO lwm_variations_market (market_id, price, instant)
     SELECT 1, TRUNC(RANDOM() * 98 + 1), (NOW() - TRUNC(RANDOM() * 24) * '1 hour'::INTERVAL)
