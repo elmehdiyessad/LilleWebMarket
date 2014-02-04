@@ -27,7 +27,7 @@ public abstract class Repository<T extends Entity>
         ;
     }
 
-    public ArrayList<T> findAll() throws Exception
+    public List<T> findAll() throws Exception
     {
         ResultSet rs = getConnection().createStatement(
             ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -52,9 +52,9 @@ public abstract class Repository<T extends Entity>
 
 
 
-    protected ArrayList<T> resultSetToList(ResultSet rs) throws Exception
+    protected List<T> resultSetToList(ResultSet rs) throws Exception
     {
-        ArrayList<T> results = new ArrayList<T>();
+        List<T> results = new ArrayList<T>();
         rs.beforeFirst();
 
         while(rs.next())

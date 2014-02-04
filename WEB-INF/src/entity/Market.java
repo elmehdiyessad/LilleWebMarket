@@ -17,6 +17,7 @@ public class Market extends Entity
     protected String titleRev;
     protected Date   term;
     protected String maker;
+    protected int    variation;
     protected List<UserStock> stocks;
 
 
@@ -77,6 +78,11 @@ public class Market extends Entity
         return this.maker;
     }
 
+    public int getVariation()
+    {
+        return this.variation;
+    }
+
     public List<UserStock> getStocks()
     {
         return this.stocks;
@@ -105,6 +111,11 @@ public class Market extends Entity
     public void setMaker(String maker)
     {
         this.maker = maker;
+    }
+
+    public void setVariation(int variation)
+    {
+        this.variation = variation + 100;
     }
 
     public void setStocks(List<UserStock> stocks)

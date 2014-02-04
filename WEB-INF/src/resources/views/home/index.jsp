@@ -30,8 +30,8 @@
                         <td class="center">
                             <time class="endtime">${m.term}</time>
                         </td>
-                        <td class="variation negative center">
-                            ??%
+                        <td class="variation ${m.variation < 0 ? "negative" : "positive"} center">
+                            ${m.variation < 0 ? "-" : "+"} ${m.variation} %
                         </td>
                     </tr>
                 </c:forEach>

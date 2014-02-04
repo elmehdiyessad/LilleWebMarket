@@ -4,7 +4,7 @@ package src.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +25,25 @@ public class MarketController extends Controller
 {
     public void showAction(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
-        Market m = getRepository(request).findOneById(Integer.parseInt(request.getParameter("id")));
+        int id = Integer.parseInt(request.getParameter("id"));
+        Market m = getRepository(request).findOneById(id);
         request.setAttribute("market", m);
+
+
+        List<Integer> variations = getRepository(request).getVariationsById(id);
+        String chartData = "";
+        int i = 0;
+
+        if(variations.size() > 0){
+            for(Integer y : variations)
+                chartData += "{ x: " + i++ + ", y: " + y + "},";
+
+            request.setAttribute(
+                "chartData",
+                chartData.substring(0, chartData.length()-1)
+            );
+        }
+
 
         render(
             "market:show",
@@ -100,7 +117,7 @@ public class MarketController extends Controller
                 UserStockRepository stockRepo = ((UserStockRepository) getManager(request).getRepository("UserStock"));
 
                 // Rechercher les UserStock inverses dont le prix est inférieur au prix de l'UserStock en création
-                ArrayList<UserStock> purchasable = stockRepo.findPurchasable(marketId, stock.getAssertion(), stock.getPrice(), user.getLogin());
+                List<UserStock> purchasable = stockRepo.findPurchasable(marketId, stock.getAssertion(), stock.getPrice(), user.getLogin());
 
                 int qty = 0;
                 int cashVariation = 0;

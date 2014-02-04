@@ -3,7 +3,7 @@ package src.entity;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.List;
 
 import framework.Repository;
 
@@ -23,7 +23,7 @@ public class UserStockRepository extends Repository<UserStock>
      * @param price Prix maximal du titre
      * @return Liste des titres achetables par rapport aux conditions
      */
-    public ArrayList<UserStock> findPurchasable(int marketId, boolean assertion, int price, String login) throws Exception
+    public List<UserStock> findPurchasable(int marketId, boolean assertion, int price, String login) throws Exception
     {
         PreparedStatement ps = prepareStatement(
             "SELECT * " +
