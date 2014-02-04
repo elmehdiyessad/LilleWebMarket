@@ -65,7 +65,7 @@ CREATE TABLE lwm_market (
 -------------------------------------------------
 CREATE TYPE ETAT AS ENUM ('BUY', 'SELL');
 CREATE TABLE lwm_user_stock (
-    stock_id    SERIAL    PRIMARY KEY,
+    stock_id    SERIAL      PRIMARY KEY,
     login       TEXT        REFERENCES  lwm_user(login)         ON DELETE CASCADE  ON UPDATE CASCADE,
     market_id   INTEGER     REFERENCES  lwm_market(market_id)   ON DELETE CASCADE  ON UPDATE CASCADE,
     nb_stock    INTEGER     NOT NULL    CHECK (nb_stock > 0),
@@ -84,7 +84,5 @@ CREATE TABLE lwm_user_stock (
 CREATE TABLE lwm_variations_market (
     market_id   INTEGER     REFERENCES  lwm_market(market_id)   ON DELETE CASCADE  ON UPDATE CASCADE,
     instant     TIMESTAMP   NOT NULL,
-    value       INTEGER     NOT NULL,
-
-    PRIMARY KEY (market_id, instant)
+    price       INTEGER     NOT NULL
 );

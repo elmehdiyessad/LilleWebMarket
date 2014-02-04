@@ -29,7 +29,7 @@ INSERT INTO lwm_market (title, title_rev, term, maker)
         'Apple va sortir un iPhone 6 cette année',
         'Apple ne fera pas un iPhone 6 cette année',
         '2014-12-31',
-        'admin'
+        'demodea'
     );
 
 INSERT INTO lwm_market (title, title_rev, term, maker)

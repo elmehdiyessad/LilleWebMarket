@@ -4,7 +4,6 @@
 
 
 <ul class="actions">
-    <li><a href="<%= request.getContextPath() %>/market/show?id=${param.id}${empty param.rev ? "" : "&rev=true"}">Actualiser</a></li>
     <li><a href="<%= request.getContextPath() %>/market/show?id=${param.id}${empty param.rev ? "&rev=true" : ""}">Marché inverse</a></li>
 </ul>
 
@@ -12,6 +11,9 @@
     <div class="box">
         <div class="box-in">
             <h3>Variations sur 24h</h3>
+            <ul class="actions">
+                <li><a href="<%= request.getContextPath() %>/market/show?id=${param.id}${empty param.rev ? "" : "&rev=true"}">Actualiser</a></li>
+            </ul>
         </div>
         <div class="chart" data-chart="[
                 { x: 0, y: 45 },
