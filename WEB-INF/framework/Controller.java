@@ -97,20 +97,37 @@ public abstract class Controller extends HttpServlet
 
     protected void addFlash(HttpServletRequest request, String type, String message)
     {
-        ((HashMap<String, String>) request.getSession(true).getAttribute("flashBag")).put(type, message);
+        HttpSession session = request.getSession();
+
+        if(session.getAttribute("flashBag") == null)
+            session.setAttribute("flashBag", new HashMap<String, String>());
+
+        ((Map<String, String>) session.getAttribute("flashBag")).put(type, message);
     }
 
     protected void flushFlashBag(HttpServletRequest request)
     {
-        HttpSession session = request.getSession(true);
-        request.setAttribute("flashBag", (Map<String, String>) session.getAttribute("flashBag"));
-        session.setAttribute("flashBag", new HashMap<String, String>());
+        request.setAttribute("flashBag", getAllFlashes(request));
+
+        request.getSession().setAttribute("flashBag", null);
     }
 
     protected void keepFlashBag(HttpServletRequest request)
     {
-        HttpSession session = request.getSession(true);
-        session.setAttribute("flashBag", (Map<String, String>) request.getAttribute("flashBag"));
+        request.getSession().setAttribute("flashBag", getAllFlashes(request));
+    }
+
+    private Map<String, String> getAllFlashes(HttpServletRequest request)
+    {
+        Map<String, String> flashBag = new HashMap<String, String>();
+
+        if(request.getSession().getAttribute("flashBag") != null)
+            flashBag.putAll((Map<String, String>) request.getSession().getAttribute("flashBag"));
+
+        if(request.getAttribute("flashBag") != null)
+            flashBag.putAll((Map<String, String>) request.getAttribute("flashBag"));
+
+        return flashBag;
     }
 
 

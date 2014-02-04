@@ -26,9 +26,11 @@ public class SecurityController extends Controller
             addFlash(request, "error", "Vous êtes déjà connecté !");
     		redirect(response, request.getContextPath());
         } else if(request.getDispatcherType() == javax.servlet.DispatcherType.FORWARD){
+            keepFlashBag(request);
             redirect(response, request.getContextPath() + "/login");
         } else {
             request.setAttribute("bodyClass", "w50");
+            flushFlashBag(request);
         	render("security:login", request, response, "Connexion");
         }
     }
