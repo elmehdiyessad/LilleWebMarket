@@ -1,9 +1,4 @@
-﻿<%@ page import="src.entity.Market" %>
-<%@ page import="java.util.ArrayList" %>
-
-
-
-<ul class="actions">
+﻿<ul class="actions">
     <li><a href="<%= request.getContextPath() %>">Actualiser</a></li>
     <li><a href="<%= request.getContextPath() %>/market/create">Ajouter une information</a></li>
 </ul>
@@ -31,7 +26,7 @@
                             <time class="endtime">${m.term}</time>
                         </td>
                         <td class="variation ${m.variation < 0 ? "negative" : "positive"} center">
-                            ${m.variation < 0 ? "-" : "+"} ${m.variation} %
+                            ${m.variation < 0 ? "-" : "+"} ${m:abs(m.variation)} %
                         </td>
                     </tr>
                 </c:forEach>

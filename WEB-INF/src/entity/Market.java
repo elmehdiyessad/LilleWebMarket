@@ -113,9 +113,9 @@ public class Market extends Entity
         this.maker = maker;
     }
 
-    public void setVariation(Integer variation)
+    public void setVariation(Double variation)
     {
-        this.variation = variation;
+        this.variation = variation.intValue();
     }
 
     public void setStocks(List<UserStock> stocks)

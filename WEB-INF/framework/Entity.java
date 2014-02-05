@@ -30,7 +30,7 @@ public abstract class Entity
             try {
                 setter.getKey().invoke(
                     this,
-                    paramType.cast(stringToObject(rs.getString(setter.getValue()), paramType))
+                    paramType.cast(stringToObject(rs.getObject(setter.getValue()).toString(), paramType))
                 );
             } catch(Exception e){}
         }
@@ -53,6 +53,8 @@ public abstract class Entity
     {
         if(Boolean.class.equals(paramType))
             return Boolean.valueOf(string);
+        else if(Double.class.equals(paramType))
+            return Double.valueOf(string);
         else if(Integer.class.equals(paramType))
             return Integer.valueOf(string);
         else if(Date.class.equals(paramType))

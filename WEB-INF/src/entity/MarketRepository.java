@@ -3,8 +3,8 @@ package src.entity;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import framework.Repository;
 
@@ -30,16 +30,16 @@ public class MarketRepository extends Repository<Market>
     {
         return
             "SELECT (" +
-                "SELECT TRUNC(AVG(price)) " +
+                "SELECT TRUNC(SUM(price * quantity)/SUM(quantity)) " +
                 "FROM " + getTableName("VariationsMarket") + " AS vm " +
                 "WHERE instant >= (NOW() - INTERVAL '1 hour') " +
-                    "AND m.market_id = vm.market_id " +
+                  "AND m.market_id = vm.market_id " +
             ") - (" +
-                "SELECT TRUNC(AVG(price)) " +
+                "SELECT TRUNC(SUM(price * quantity)/SUM(quantity)) " +
                 "FROM " + getTableName("VariationsMarket") + " AS vm " +
                 "WHERE instant >= (NOW() - INTERVAL '2 hour') " +
-                    "AND instant < (NOW() - INTERVAL '1 hour') " +
-                    "AND m.market_id = vm.market_id " +
+                  "AND instant < (NOW() - INTERVAL '1 hour') " +
+                  "AND m.market_id = vm.market_id " +
             ")";
     }
 
@@ -111,16 +111,16 @@ public class MarketRepository extends Repository<Market>
 
 
 
-    public List<Integer> getVariationsById(int id) throws Exception
+    public Map<Integer, Integer> getVariationsById(int id) throws Exception
     {
-        List<Integer> results = new ArrayList<Integer>();
+        Map<Integer, Integer> results = new HashMap<Integer, Integer>();
 
         PreparedStatement ps = prepareStatement(
-            "SELECT TRUNC(AVG(price)) AS variation " +
+            "SELECT TRUNC(SUM(price * quantity)/SUM(quantity)) AS variation, EXTRACT(HOUR FROM instant) AS hour " +
             "FROM lwm_variations_market " +
             "WHERE instant >= (NOW() - INTERVAL '1 day') " +
                 "AND market_id = ? " +
-            "GROUP BY EXTRACT(HOUR FROM instant)"
+            "GROUP BY hour"
         );
 
         ps.setInt(1, id);
@@ -128,8 +128,23 @@ public class MarketRepository extends Repository<Market>
         ResultSet rs = ps.executeQuery();
 
         while(rs.next())
-            results.add(rs.getInt("variation"));
+            results.put(rs.getInt("hour"), rs.getInt("variation"));
 
         return results;
+    }
+
+
+    public void addVariation(int marketId, int price, int quantity) throws Exception
+    {
+        PreparedStatement ps = prepareStatement(
+            "INSERT INTO lwm_variations_market (market_id, price, quantity) " +
+            "VALUES (?, ?, ?)"
+        );
+
+        ps.setInt(1, marketId);
+        ps.setInt(2, price);
+        ps.setInt(3, quantity);
+
+        ps.execute();
     }
 }

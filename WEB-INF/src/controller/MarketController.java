@@ -4,7 +4,10 @@ package src.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.ResultSet;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,13 +33,14 @@ public class MarketController extends Controller
         request.setAttribute("market", m);
 
 
-        List<Integer> variations = getRepository(request).getVariationsById(id);
+        Map<Integer, Integer> variations = getRepository(request).getVariationsById(id);
         String chartData = "";
-        int i = 0;
+        int curHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
 
         if(variations.size() > 0){
-            for(Integer y : variations)
-                chartData += "{ x: " + i++ + ", y: " + y + "},";
+            for(int i = 1; i <= 24; i++){
+                chartData += "{ x: " + i + ", y: " + variations.get((curHour + i) % 24) + "},";
+            }
 
             request.setAttribute(
                 "chartData",
@@ -113,11 +117,11 @@ public class MarketController extends Controller
             if(v.isValid()){
 
                 // Récupérer les Repository nécessaires
-                UserRepository userRepo = ((UserRepository) getManager(request).getRepository("User"));
+                UserRepository userRepo       = ((UserRepository) getManager(request).getRepository("User"));
                 UserStockRepository stockRepo = ((UserStockRepository) getManager(request).getRepository("UserStock"));
 
                 // Rechercher les UserStock inverses dont le prix est inférieur au prix de l'UserStock en création
-                List<UserStock> purchasable = stockRepo.findPurchasable(marketId, stock.getAssertion(), stock.getPrice(), user.getLogin());
+                List<UserStock> purchasable   = stockRepo.findPurchasable(marketId, stock.getAssertion(), stock.getPrice(), user.getLogin());
 
                 int qty = 0;
                 int cashVariation = 0;
@@ -127,20 +131,26 @@ public class MarketController extends Controller
                     if(stock.getNbStock() - stock.getNbSold() <= 0)
                         break;
 
-                    // Augmenter la valeur nbSold du UserStock débiteur d'autant que possible
-                    qty = us.getNbStock() - us.getNbSold();
-                    if(qty > stock.getNbStock() - stock.getNbSold())
-                        qty = stock.getNbStock() - stock.getNbSold();
-                    stockRepo.addToNbSold(us.getStockId(), qty);
+                    // On protège les erreurs dues au manque de cash
+                    try {
+                        // Augmenter la valeur nbSold du UserStock débiteur d'autant que possible
+                        qty = us.getNbStock() - us.getNbSold();
+                        if(qty > stock.getNbStock() - stock.getNbSold())
+                            qty = stock.getNbStock() - stock.getNbSold();
+                        stockRepo.addToNbSold(us.getStockId(), qty);
 
-                    // Augmenter la valeur nbBuy du UserStock en création de cette même valeur
-                    stock.addNbSold(qty);
+                        // Augmenter la valeur nbBuy du UserStock en création de cette même valeur
+                        stock.addNbSold(qty);
 
-                    // Retirer price * cette valeur au cash de l'User
-                    cashVariation -= qty * us.getPrice();
+                        // Retirer price * cette valeur au cash de l'User
+                        cashVariation -= qty * us.getPrice();
 
-                    // Retirer price * cette valeur au cash de l'acheteur inverse
-                    userRepo.addToCash(us.getLogin(), -qty * us.getPrice());
+                        // Retirer price * cette valeur au cash de l'acheteur inverse
+                        userRepo.addToCash(us.getLogin(), -qty * us.getPrice());
+
+                        // Enregistre cette transaction dans les variations
+                        getRepository(request).addVariation(marketId, us.getPrice(), qty);
+                    } catch(Exception e){}
                 }
 
                 // Mettre à jour le cash de l'User

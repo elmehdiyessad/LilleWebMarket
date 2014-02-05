@@ -83,6 +83,7 @@ CREATE TABLE lwm_user_stock (
 -------------------------------------------------
 CREATE TABLE lwm_variations_market (
     market_id   INTEGER     REFERENCES  lwm_market(market_id)   ON DELETE CASCADE  ON UPDATE CASCADE,
-    instant     TIMESTAMP   NOT NULL,
-    price       INTEGER     NOT NULL
+    instant     TIMESTAMP   NOT NULL    DEFAULT CURRENT_TIMESTAMP,
+    price       INTEGER     NOT NULL,
+    quantity    INTEGER     NOT NULL
 );
