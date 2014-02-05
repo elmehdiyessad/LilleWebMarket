@@ -24,6 +24,8 @@ public class FieldTag extends SimpleTagSupport implements DynamicAttributes
     private boolean required;
     private HashMap<String, String> tagAttributes = new HashMap<String, String>();
 
+    private static int uniq = 0;
+
 
 
     public void setDynamicAttribute(String uri, String name, Object value) throws JspException
@@ -39,11 +41,12 @@ public class FieldTag extends SimpleTagSupport implements DynamicAttributes
         HttpServletRequest request = ((HttpServletRequest) ((PageContext) getJspContext()).getRequest());
         JspWriter out = getJspContext().getOut();
         Validator v = (Validator) request.getAttribute("errors");
+        uniq++;
 
         // Construit le champ
         out.println("<p>");
-        out.println("    <label for=\"form_" + name + "\">" + label + "</label>");
-        out.print(  "    <input type=\"" + type + "\" name=\"" + name + "\" id=\"form_" + name + "\"");
+        out.println("    <label for=\"form_" + name + "_" + uniq + "\">" + label + "</label>");
+        out.print(  "    <input type=\"" + type + "\" name=\"" + name + "\" id=\"form_" + name + "_" + uniq + "\"");
 
             if(required)
                 out.print(" required");

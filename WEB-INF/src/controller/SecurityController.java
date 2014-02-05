@@ -38,7 +38,7 @@ public class SecurityController extends Controller
     public void loginAction(HttpServletRequest request, HttpServletResponse response)
     {
         addFlash(request, "success", "Bienvenue " + ((User) request.getAttribute("user")).getFirstName() + " !");
-        redirect(response, request.getContextPath());
+        redirect(response, request.getParameter("from"));
     }
 
     public void registerAction(HttpServletRequest request, HttpServletResponse response) throws Exception

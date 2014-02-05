@@ -43,6 +43,11 @@ public abstract class Controller extends HttpServlet
                     "user",
                     ((UserRepository) getManager(request).getRepository("User")).findOneByLogin(request.getUserPrincipal().getName())
                 );
+            else
+                request.setAttribute(
+                    "urlFrom",
+                    request.getRequestURL() + ((request.getQueryString() != null) ? "?" + request.getQueryString() : "")
+                );
 
             String[] path = request.getServletPath().split("/");
             String action = (path.length == 3 && path[2].length() > 0)

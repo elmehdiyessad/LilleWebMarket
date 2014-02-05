@@ -32,14 +32,28 @@ public class MarketController extends Controller
         Market m = getRepository(request).findOneById(id);
         request.setAttribute("market", m);
 
+        if(request.getUserPrincipal() != null){
+            User user = (User) request.getAttribute("user");
+            UserStockRepository stockRepo = ((UserStockRepository) getManager(request).getRepository("UserStock"));
+            request.setAttribute("nbStock", stockRepo.findSellable(id, user.getLogin()));
+        }
+        
 
         Map<Integer, Integer> variations = getRepository(request).getVariationsById(id);
         String chartData = "";
         int curHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        Integer lastVal = null;
 
         if(variations.size() > 0){
             for(int i = 1; i <= 24; i++){
-                chartData += "{ x: " + i + ", y: " + variations.get((curHour + i) % 24) + "},";
+                Integer value = variations.get((curHour + i) % 24);
+
+                if(value == null)
+                    value = lastVal;
+
+                lastVal = value;
+
+                chartData += "{ x: " + i + ", y: " + value + " },";
             }
 
             request.setAttribute(

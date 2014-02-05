@@ -12,7 +12,8 @@ for(var i = 0; i < charts.length; i++){
         series: [
             {
                 color: '#0AA699',
-                data: data
+                data: data,
+                name: "variations"
             },
             {
                 color: 'transparent',
@@ -22,4 +23,11 @@ for(var i = 0; i < charts.length; i++){
     } );
 
     graph.render();
+
+    var hoverDetail = new Rickshaw.Graph.HoverDetail({
+        graph: graph,
+        formatter: function(series, x, y) {
+            return (series.name === "variations") ? (parseInt(y) + " €") : "";
+        }
+    });
 }

@@ -32,7 +32,7 @@
                     </c:if>
                     <c:if test="${empty pageContext.request.userPrincipal}">
                         <a href="<%= request.getContextPath() %>/security/register" class="login">Inscription</a>
-                        <a href="<%= request.getContextPath() %>/security/login" class="login">Connexion</a>
+                        <a href="<%= request.getContextPath() %>/security/login?from=${urlFrom}" class="login">Connexion</a>
                     </c:if>
                 </div>
             </div>

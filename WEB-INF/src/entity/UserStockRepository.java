@@ -21,19 +21,20 @@ public class UserStockRepository extends Repository<UserStock>
      * @param marketId Id du marché concerné
      * @param assertion Défini si on achète pour le marché ou son symétrique
      * @param price Prix maximal du titre
+     * @param login Login de l'utilisateur concerné
      * @return Liste des titres achetables par rapport aux conditions
      */
     public List<UserStock> findPurchasable(int marketId, boolean assertion, int price, String login) throws Exception
     {
         PreparedStatement ps = prepareStatement(
             "SELECT * " +
-            "FROM " + getTableName() + " AS us " +
+            "FROM " + getTableName() + " " +
             "WHERE market_id = ? " +
-              "AND us.login != ? " +
-              "AND us.assertion = ? " +
-              "AND us.price <= ? " +
-              "AND us.nb_stock - us.nb_sold > 0 " +
-            "ORDER BY us.price ASC, us.creation ASC"
+              "AND login != ? " +
+              "AND assertion = ? " +
+              "AND price <= ? " +
+              "AND nb_stock - nb_sold > 0 " +
+            "ORDER BY price ASC, creation ASC"
         );
 
         ps.setInt(1, marketId);
@@ -42,6 +43,33 @@ public class UserStockRepository extends Repository<UserStock>
         ps.setInt(4, price);
 
         return resultSetToList(ps.executeQuery());
+    }
+
+
+
+    /**
+     * Recherche les titres possédés
+     *
+     * @param marketId Id du marché concerné
+     * @param login Login de l'utilisateur concerné
+     * @return Liste des titres possédés par rapport aux conditions
+     */
+    public Integer findSellable(int marketId, String login) throws Exception
+    {
+        PreparedStatement ps = prepareStatement(
+            "SELECT SUM(nb_sold) AS nbStock " +
+            "FROM " + getTableName() + " " +
+            "WHERE market_id = ? " +
+              "AND login = ? "
+        );
+
+        ps.setInt(1, marketId);
+        ps.setString(2, login);
+
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+
+        return rs.getInt("nbStock");
     }
 
 
@@ -65,6 +93,7 @@ public class UserStockRepository extends Repository<UserStock>
 
         ps.execute();
     }
+
 
 
     /**

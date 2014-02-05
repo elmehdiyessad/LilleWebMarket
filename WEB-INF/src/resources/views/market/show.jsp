@@ -13,6 +13,7 @@
             <div class="box-in">
                 <h3>Variations sur 24h</h3>
                 <ul class="actions">
+                    <li><span class="variation ${market.variation < 0 ? "negative" : "positive"}">${market.variation < 0 ? "-" : "+"} ${m:abs(market.variation)} %</span></li>
                     <li><a href="<%= request.getContextPath() %>/market/show?id=${param.id}${empty param.rev ? "" : "&rev=true"}">Actualiser</a></li>
                 </ul>
             </div>
@@ -101,6 +102,10 @@
         <div class="box w50">
             <form action="<%= request.getContextPath() %>/market/sell?id=${market.marketId}${empty param.rev ? "" : "&rev=true"}" method="post" class="box-in">
                 <h3>Vendre des titres</h3>
+
+                <ul class="actions">
+                    <li><span>${nbStock}</span></li>
+                </ul>
 
                 <f:field type="number" label="Quantité" name="nb_stock" required="true" min="1"/>
                 <f:field type="number" label="Prix" name="price" required="true" min="1" max="99"/>

@@ -26,19 +26,21 @@ public class MarketRepository extends Repository<Market>
         ;
     }
 
+
+
     private String getVariationQuery() throws Exception
     {
         return
             "SELECT (" +
                 "SELECT TRUNC(SUM(price * quantity)/SUM(quantity)) " +
                 "FROM " + getTableName("VariationsMarket") + " AS vm " +
-                "WHERE instant >= (NOW() - INTERVAL '1 hour') " +
+                "WHERE instant >= (NOW() - INTERVAL '1 day') " +
                   "AND m.market_id = vm.market_id " +
             ") - (" +
                 "SELECT TRUNC(SUM(price * quantity)/SUM(quantity)) " +
                 "FROM " + getTableName("VariationsMarket") + " AS vm " +
-                "WHERE instant >= (NOW() - INTERVAL '2 hour') " +
-                  "AND instant < (NOW() - INTERVAL '1 hour') " +
+                "WHERE instant >= (NOW() - INTERVAL '2 days') " +
+                  "AND instant < (NOW() - INTERVAL '1 day') " +
                   "AND m.market_id = vm.market_id " +
             ")";
     }
@@ -55,7 +57,7 @@ public class MarketRepository extends Repository<Market>
     public Market findOneById(int id) throws Exception
     {
         PreparedStatement ps = prepareStatement(
-            "SELECT * " +
+            "SELECT *, (" + getVariationQuery() + ") AS variation " +
             "FROM " + getTableName() + " AS m " +
             "LEFT JOIN " + getTableName("UserStock") + " AS us " +
                 "ON m.market_id = us.market_id " +
@@ -132,6 +134,7 @@ public class MarketRepository extends Repository<Market>
 
         return results;
     }
+
 
 
     public void addVariation(int marketId, int price, int quantity) throws Exception
