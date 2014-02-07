@@ -35,7 +35,7 @@ public class MarketController extends Controller
         if(request.getUserPrincipal() != null){
             User user = (User) request.getAttribute("user");
             UserStockRepository stockRepo = ((UserStockRepository) getManager(request).getRepository("UserStock"));
-            request.setAttribute("nbStock", stockRepo.findSellable(id, user.getLogin()));
+            request.setAttribute("nbStock", stockRepo.countSellable(id, user.getLogin()));
         }
 
 
@@ -234,9 +234,9 @@ public class MarketController extends Controller
                     // Mettre à jour le cash des "gagnants"
                     stockRepo.endMarket(marketId, rep);
 
-                    // Supprime le marché et tout ce qui en dépend
-                    // grâce aux contraintes en cascades sur les FK
-                    getRepository(request).delete(m);
+                    // Désactive le marché et verse la somme due
+                    // aux users qui ont des titres
+                    getRepository(request).disable(m);
                 } catch(Exception e){}
 
                 // Afficher un message de confirmation

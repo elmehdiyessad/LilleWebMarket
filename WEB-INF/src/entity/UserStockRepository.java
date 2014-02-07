@@ -54,7 +54,7 @@ public class UserStockRepository extends Repository<UserStock>
      * @param login Login de l'utilisateur concerné
      * @return Liste des titres possédés par rapport aux conditions
      */
-    public Integer findSellable(int marketId, String login) throws Exception
+    public Integer countSellable(int marketId, String login) throws Exception
     {
         PreparedStatement ps = prepareStatement(
             "SELECT SUM(nb_sold) AS nbStock " +
@@ -85,14 +85,21 @@ public class UserStockRepository extends Repository<UserStock>
     {
         PreparedStatement ps = prepareStatement(
             "UPDATE " + getTableName("UserInfos") + " AS ui " +
-            "SET cash = cash + COALESCE((" +
-                "SELECT SUM(price * nb_sold) " +
+            "SET cash = cash + COALESCE(((" +
+                "SELECT SUM(100 * nb_sold) " +
                 "FROM " + getTableName() + " AS us " +
                 "WHERE market_id = ? " +
                   "AND assertion = ? " +
                   "AND us.login = ui.login " +
                   "AND buy_or_sell = 'BUY' " +
-            "), 0)"
+                ") - (" +
+                "SELECT SUM(100 * nb_sold) " +
+                "FROM " + getTableName() + " AS us " +
+                "WHERE market_id = ? " +
+                  "AND assertion = ? " +
+                  "AND us.login = ui.login " +
+                  "AND buy_or_sell = 'SELL' " +
+            ")), 0)"
         );
 
         ps.setInt(1, marketId);

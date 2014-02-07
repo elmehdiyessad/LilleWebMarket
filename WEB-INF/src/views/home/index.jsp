@@ -4,7 +4,9 @@
 
 <ul class="actions">
     <li><a href="${contextPath}">Actualiser</a></li>
-    <li><a href="${contextPath}/market/create">Créer un marché</a></li>
+    <c:if test="${!empty user and user.role == 'maker' or user.role == 'admin'}">
+        <li><a href="${contextPath}/market/create">Créer un marché</a></li>
+    </c:if>
 </ul>
 
 <div class="box">

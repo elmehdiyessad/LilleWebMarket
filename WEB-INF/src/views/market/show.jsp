@@ -8,7 +8,7 @@
 
 <c:if test="${!empty chartData or user.login == market.maker or market.term < now}">
     <div class="row">
-        <c:if test="${!empty chartData}">
+        <c:if test="${!empty chartData and market.term > now}">
             <div class="box ${user.login == market.maker ? "w50" : ""}">
                 <div class="box-in">
                     <h3>Variations sur 24h</h3>
@@ -22,7 +22,7 @@
         </c:if>
 
         <c:if test="${user.login == market.maker}">
-            <div class="box ${!empty chartData ? "w50" : ""}">
+            <div class="box ${!empty chartData and market.term > now ? "w50" : ""}">
                 <div class="box-in">
                     <h3>Gestion du marché</h3>
 
@@ -46,7 +46,7 @@
             </div>
         </c:if>
         <c:if test="${market.term < now and user.login != market.maker}">
-            <div class="box ${!empty chartData ? "w50" : ""}">
+            <div class="box ${!empty chartData and market.term > now ? "w50" : ""}">
                 <div class="box-in">
                     <h3>Marché en attente de réponse</h3>
 

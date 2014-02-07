@@ -152,11 +152,11 @@ public class MarketRepository extends Repository<Market>
     {
         PreparedStatement ps = prepareStatement(
             "UPDATE " + getTableName() + " " +
-            "SET enabled = FALSE, response = ? "
+            "SET enabled = FALSE, response = ? " +
             "WHERE market_id = ?"
         );
 
-        ps.setInt(1, m.getResponse());
+        ps.setBoolean(1, m.getResponse());
         ps.setInt(2, m.getMarketId());
 
         ps.execute();

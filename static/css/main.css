@@ -506,7 +506,6 @@ form button:focus {
 footer {
     margin-top: 50px;
     padding: 15px 0;
-    background: #1B1E24;
     text-align: center;
     color: #999;
     text-transform: uppercase;
@@ -515,7 +514,7 @@ footer {
     font-weight: 300;
 }
 footer .market {
-    color: #CCC;
+    color: #555;
 }
 footer p {
     margin: 0;
