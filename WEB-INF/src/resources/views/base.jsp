@@ -22,7 +22,10 @@
                 <c:if test="${!empty user}">
                     <nav>
                         <ul class="actions">
-                            <li><a href="${contextPath}/market/my">Mes Marchés</a></li>
+                            <c:if test="${!empty user and user.role == 'maker' or user.role == 'admin'}">
+                                <li><a href="${contextPath}/market/mymarkets">Mes Marchés</a></li>
+                            </c:if>
+                            <li><a href="${contextPath}/market/mystocks">Mes Titres</a></li>
                         </ul>
                     </nav>
                 </c:if>

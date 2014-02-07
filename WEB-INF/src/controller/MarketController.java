@@ -258,13 +258,26 @@ public class MarketController extends Controller
         redirect(response, request.getContextPath() + "/market/my");
     }
 
-    public void myAction(HttpServletRequest request, HttpServletResponse response) throws Exception
+    public void mymarketsAction(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
         // Récupérer l'User
         User user = (User) request.getAttribute("user");
-        request.setAttribute("markets", getRepository(request).findMy(user.getLogin()));
 
-        render("market:my", request, response, "Mes marchés");
+        // Récupérer les marchés créés par l'user
+        request.setAttribute("markets", getRepository(request).findByMaker(user.getLogin()));
+
+        render("market:mymarkets", request, response, "Mes marchés");
+    }
+
+    public void mystocksAction(HttpServletRequest request, HttpServletResponse response) throws Exception
+    {
+        // Récupérer l'User
+        User user = (User) request.getAttribute("user");
+
+        // Récupérer les marchés pour lesquels l'user a des titres
+        request.setAttribute("markets", getRepository(request).findByStockholder(user.getLogin()));
+
+        render("market:mystocks", request, response, "Mes titres");
     }
 
 
