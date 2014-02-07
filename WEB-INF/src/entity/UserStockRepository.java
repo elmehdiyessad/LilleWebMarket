@@ -32,7 +32,7 @@ public class UserStockRepository extends Repository<UserStock>
             "WHERE market_id = ? " +
               "AND login != ? " +
               "AND assertion = ? " +
-              "AND price <= ? " +
+              "AND 100 - price <= ? " +
               "AND nb_stock - nb_sold > 0 " +
             "ORDER BY price ASC, creation ASC"
         );

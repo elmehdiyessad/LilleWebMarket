@@ -14,7 +14,6 @@
                     <h3>Variations sur 24h</h3>
                     <ul class="actions">
                         <li><span class="variation ${market.variation < 0 ? "negative" : "positive"}">${market.variation < 0 ? "-" : "+"} ${m:abs(market.variation)} %</span></li>
-                        <li><a href="${contextPath}/market/show?id=${param.id}${empty param.rev ? "" : "&rev=true"}">Actualiser</a></li>
                     </ul>
                 </div>
                 <div class="chart" data-chart="[${chartData}]"></div>
@@ -84,7 +83,7 @@
                                         ${s.nbStock - s.nbSold}
                                     </td>
                                     <td class="center">
-                                        ${s.price} €
+                                        ${100 - s.price} €
                                     </td>
                                     <td class="center">
                                         ${s.login}

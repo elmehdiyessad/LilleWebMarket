@@ -202,11 +202,84 @@ public class MarketController extends Controller
         int marketId = Integer.parseInt(request.getParameter("id"));
         boolean rev  = request.getParameter("rev") != null;
 
-        addFlash(
-            request,
-            "error",
-            "/!\\ Non implémenté !"
-        );
+        if(request.getMethod().equals("POST")){
+            // Récupérer l'User
+            User user = (User) request.getAttribute("user");
+
+            // Créer un objet UserStock
+            UserStock stock = new UserStock();
+            stock.setMarketId(marketId);
+            stock.setLogin(getUser(request).getLogin());
+            stock.setAssertion(rev);
+            stock.setBuyOrSell("SELL");
+
+            // Récupérer les valeurs du formulaire
+            stock.hydrate(request);
+            Validator v = stock.validate();
+
+            if(v.isValid()){
+
+                // Récupérer les Repository nécessaires
+                UserRepository userRepo       = ((UserRepository) getManager(request).getRepository("User"));
+                UserStockRepository stockRepo = ((UserStockRepository) getManager(request).getRepository("UserStock"));
+
+                // Rechercher les UserStock inverses dont le prix est inférieur au prix de l'UserStock en création
+                List<UserStock> purchasable   = stockRepo.findPurchasable(marketId, stock.getAssertion(), stock.getPrice(), user.getLogin());
+
+                int qty = 0;
+                int cashVariation = 0;
+
+                // Pour chaque UserStock capable de vendre au prix demandé
+                for(UserStock us : purchasable){
+                    if(stock.getNbStock() - stock.getNbSold() <= 0)
+                        break;
+
+                    // On protège les erreurs dues au manque de cash
+                    try {
+                        // Augmenter la valeur nbSold du UserStock débiteur d'autant que possible
+                        qty = us.getNbStock() - us.getNbSold();
+                        if(qty > stock.getNbStock() - stock.getNbSold())
+                            qty = stock.getNbStock() - stock.getNbSold();
+                        stockRepo.addToNbSold(us.getStockId(), qty);
+
+                        // Augmenter la valeur nbBuy du UserStock en création de cette même valeur
+                        stock.addNbSold(qty);
+
+                        // Ajoute price * cette valeur au cash de l'User
+                        cashVariation += qty * us.getPrice();
+
+                        // Retirer price * cette valeur au cash de l'acheteur inverse
+                        userRepo.addToCash(us.getLogin(), -qty * us.getPrice());
+
+                        // Enregistre cette transaction dans les variations
+                        getRepository(request).addVariation(marketId, us.getPrice(), qty);
+                    } catch(Exception e){}
+                }
+
+                // Mettre à jour le cash de l'User
+                userRepo.addToCash(user.getLogin(), cashVariation);
+
+                // Sauvegarder le nouvel UserStock
+                stockRepo.create(stock);
+
+                // Afficher un message de confirmation
+                int diff = stock.getNbStock() - stock.getNbSold();
+                addFlash(
+                    request,
+                    "success",
+                    "Vous avez vendu " + stock.getNbStock() + " titre" + ((stock.getNbStock() > 1) ? "s" : "") + " " +
+                        (diff > 0 ? "(dont " + diff + " en attente) " : "") +
+                        "pour un total maximal de " + (stock.getNbStock() * stock.getPrice()) + "€"
+                );
+            } else {
+                request.setAttribute("errors", v);
+                addFlash(
+                    request,
+                    "error",
+                    "Le formulaire contient des erreurs"
+                );
+            }
+        }
 
         redirect(response, request.getContextPath() + "/market/show?id=" + marketId + (rev ? "&rev=true" : ""));
     }
@@ -255,7 +328,7 @@ public class MarketController extends Controller
         }
 
         // Rediriger vers la page des marchés de l'utilisateur
-        redirect(response, request.getContextPath() + "/market/my");
+        redirect(response, request.getContextPath() + "/market/mymarkets");
     }
 
     public void mymarketsAction(HttpServletRequest request, HttpServletResponse response) throws Exception
