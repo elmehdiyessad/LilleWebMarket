@@ -4,6 +4,7 @@ package src.entity;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import framework.Repository;
@@ -85,6 +86,20 @@ public class MarketRepository extends Repository<Market>
     }
 
 
+    public List<Market> findMy(String login) throws Exception
+    {
+        PreparedStatement ps = prepareStatement(
+            "SELECT * " +
+            "FROM " + getTableName() + " " +
+            "WHERE maker = ?"
+        );
+
+        ps.setString(1, login);
+
+        return resultSetToList(ps.executeQuery());
+    }
+
+
 
     /**
      * Crée un nouveau marché
@@ -109,6 +124,25 @@ public class MarketRepository extends Repository<Market>
         rs.next();
 
         return rs.getInt(1);
+    }
+
+
+    /**
+     * Crée un nouveau marché
+     *
+     * @param m Le marché à créer
+     * @return Id du marché créé
+     */
+    public void delete(Market m) throws Exception
+    {
+        PreparedStatement ps = prepareStatement(
+            "DELETE FROM " + getTableName() + " " +
+            "WHERE market_id = ?"
+        );
+
+        ps.setInt(1, m.getMarketId());
+
+        ps.execute();
     }
 
 

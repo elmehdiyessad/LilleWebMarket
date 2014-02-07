@@ -37,7 +37,7 @@ public class MarketController extends Controller
             UserStockRepository stockRepo = ((UserStockRepository) getManager(request).getRepository("UserStock"));
             request.setAttribute("nbStock", stockRepo.findSellable(id, user.getLogin()));
         }
-        
+
 
         Map<Integer, Integer> variations = getRepository(request).getVariationsById(id);
         String chartData = "";
@@ -178,7 +178,8 @@ public class MarketController extends Controller
                 addFlash(
                     request,
                     "success",
-                    "Vous avez acheté " + stock.getNbStock() + " titre" + ((stock.getNbStock() > 1) ? "s" : "") + " " + (diff > 0 ? "(dont " + diff + " en attente) " : "") +
+                    "Vous avez acheté " + stock.getNbStock() + " titre" + ((stock.getNbStock() > 1) ? "s" : "") + " " +
+                        (diff > 0 ? "(dont " + diff + " en attente) " : "") +
                         "pour un total maximal de " + (stock.getNbStock() * stock.getPrice()) + "€"
                 );
             } else {
@@ -193,6 +194,77 @@ public class MarketController extends Controller
 
         // Rediriger vers la page du marché
         redirect(response, request.getContextPath() + "/market/show?id=" + marketId + (rev ? "&rev=true" : ""));
+    }
+
+    public void sellAction(HttpServletRequest request, HttpServletResponse response) throws Exception
+    {
+        // Récupèrer l'id du market
+        int marketId = Integer.parseInt(request.getParameter("id"));
+        boolean rev  = request.getParameter("rev") != null;
+
+        addFlash(
+            request,
+            "error",
+            "/!\\ Non implémenté !"
+        );
+
+        redirect(response, request.getContextPath() + "/market/show?id=" + marketId + (rev ? "&rev=true" : ""));
+    }
+
+    public void endAction(HttpServletRequest request, HttpServletResponse response) throws Exception
+    {
+        // Récupèrer l'id du market
+        int marketId = Integer.parseInt(request.getParameter("id"));
+
+        if(request.getMethod().equals("POST")){
+            // Récupérer l'User et du Market
+            User user = (User) request.getAttribute("user");
+            Market m = getRepository(request).findOneById(marketId);
+
+            // Vérification que le créateur est bien l'user courant
+            if(user.getLogin().equals(m.getMaker())){
+                // Récupérer les Repository nécessaires
+                UserRepository userRepo       = ((UserRepository) getManager(request).getRepository("User"));
+                UserStockRepository stockRepo = ((UserStockRepository) getManager(request).getRepository("UserStock"));
+
+                // Récupérer la réponse
+                boolean rep  = request.getParameter("yes") != null;
+
+                try {
+                    // Mettre à jour le cash des "gagnants"
+                    stockRepo.endMarket(marketId, rep);
+
+                    // Supprime le marché et tout ce qui en dépend
+                    // grâce aux contraintes en cascades sur les FK
+                    getRepository(request).delete(m);
+                } catch(Exception e){}
+
+                // Afficher un message de confirmation
+                addFlash(
+                    request,
+                    "success",
+                    "Le marché a été terminé avec réponse : " + (rep ? "Oui" : "Non")
+                );
+            } else {
+                addFlash(
+                    request,
+                    "error",
+                    "Ce marché n'est pas le votre"
+                );
+            }
+        }
+
+        // Rediriger vers la page des marchés de l'utilisateur
+        redirect(response, request.getContextPath() + "/market/my");
+    }
+
+    public void myAction(HttpServletRequest request, HttpServletResponse response) throws Exception
+    {
+        // Récupérer l'User
+        User user = (User) request.getAttribute("user");
+        request.setAttribute("markets", getRepository(request).findMy(user.getLogin()));
+
+        render("market:my", request, response, "Mes marchés");
     }
 
 

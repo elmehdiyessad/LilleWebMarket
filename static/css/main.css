@@ -154,6 +154,14 @@ a:focus {
 
 
 
+#header .actions {
+    float: left;
+    margin-top: 12px;
+    margin-left: 30px;
+}
+
+
+
 .logbox {
     text-align: right;
     float: right;
@@ -278,6 +286,7 @@ form button:focus {
     clear: both;
 }
 .box {
+    position: relative;
     background: #FFF;
     border: 1px solid #DDD;
     border-top: 3px solid #0AA699;
@@ -304,6 +313,49 @@ form button:focus {
 }
 .row .w50 {
     float: left;
+}
+
+.disabled {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.disabled:before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, .7);
+    z-index: 2;
+}
+.disabled:after {
+    content: attr(data-message);
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    width: 80%;
+    margin-top: -20px;
+    height: 40px;
+    line-height: 40px;
+    background: #EEE;
+    text-align: center;
+    z-index: 3;
+    border: 1px solid #DDD;
+    border-radius: 3px;
+    box-shadow: rgba(0, 0, 0, .05) 0 0 10px;
+    font-family: Roboto, Arial, sans-serif;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 300;
 }
 
 
@@ -429,7 +481,7 @@ form .submit {
     margin: 0;
 }
 form button {
-    margin-top: 24px;
+    margin: 24px 0 0 10px;
     border: 0;
     float: right;
     color: #FFF;

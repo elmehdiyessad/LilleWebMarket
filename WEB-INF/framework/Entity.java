@@ -17,7 +17,7 @@ import framework.Validator;
 
 public abstract class Entity
 {
-    public static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 
     public abstract Validator validate();

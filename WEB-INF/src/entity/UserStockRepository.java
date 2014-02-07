@@ -60,7 +60,8 @@ public class UserStockRepository extends Repository<UserStock>
             "SELECT SUM(nb_sold) AS nbStock " +
             "FROM " + getTableName() + " " +
             "WHERE market_id = ? " +
-              "AND login = ? "
+              "AND login = ? " +
+              "AND buy_or_sell = 'BUY' "
         );
 
         ps.setInt(1, marketId);
@@ -70,6 +71,34 @@ public class UserStockRepository extends Repository<UserStock>
         rs.next();
 
         return rs.getInt("nbStock");
+    }
+
+
+
+    /**
+     * Execute les mises à jour du cash de fin de marché
+     *
+     * @param marketId Id du marché concerné
+     * @param assertion Défini si on est pour le marché ou son symétrique
+     */
+    public void endMarket(int marketId, boolean assertion) throws Exception
+    {
+        PreparedStatement ps = prepareStatement(
+            "UPDATE " + getTableName("UserInfos") + " AS ui " +
+            "SET cash = cash + COALESCE((" +
+                "SELECT SUM(price * nb_sold) " +
+                "FROM " + getTableName() + " AS us " +
+                "WHERE market_id = ? " +
+                  "AND assertion = ? " +
+                  "AND us.login = ui.login " +
+                  "AND buy_or_sell = 'BUY' " +
+            "), 0)"
+        );
+
+        ps.setInt(1, marketId);
+        ps.setBoolean(2, assertion);
+
+        ps.execute();
     }
 
 

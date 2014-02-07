@@ -87,7 +87,8 @@
         <url-pattern>/market/create</url-pattern>
         <url-pattern>/market/buy</url-pattern>
         <url-pattern>/market/sell</url-pattern>
-        <url-pattern>/market/delete</url-pattern>
+        <url-pattern>/market/my</url-pattern>
+        <url-pattern>/market/end</url-pattern>
     </servlet-mapping>
 
 
@@ -117,7 +118,8 @@
             <url-pattern>/market/create</url-pattern>
             <url-pattern>/market/buy</url-pattern>
             <url-pattern>/market/sell</url-pattern>
-            <url-pattern>/market/delete</url-pattern>
+            <url-pattern>/market/my</url-pattern>
+            <url-pattern>/market/end</url-pattern>
         </web-resource-collection>
 
         <auth-constraint>

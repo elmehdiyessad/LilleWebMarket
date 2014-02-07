@@ -13,6 +13,7 @@ public class User extends Entity
     protected String firstName;
     protected String lastName;
     protected int    cash;
+    protected String role;
 
 
 
@@ -65,6 +66,11 @@ public class User extends Entity
         return this.lastName;
     }
 
+    public String getRole()
+    {
+        return this.role;
+    }
+
     public Integer getCash()
     {
         return this.cash;
@@ -88,6 +94,11 @@ public class User extends Entity
     public void setLastName(String lastName)
     {
         this.lastName = lastName;
+    }
+
+    public void setRole(String role)
+    {
+        this.role = role;
     }
 
     public void setCash(Integer cash)

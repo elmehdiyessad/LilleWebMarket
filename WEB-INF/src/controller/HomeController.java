@@ -18,7 +18,7 @@ public class HomeController extends Controller
 {
     public void indexAction(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
-    	request.setAttribute("markets", getManager(request).getRepository("Market").findAll());
+        request.setAttribute("markets", getManager(request).getRepository("Market").findAll());
 
         render("home:index", request, response, "Accueil");
     }
