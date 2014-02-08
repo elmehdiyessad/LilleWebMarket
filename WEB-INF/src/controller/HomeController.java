@@ -1,16 +1,10 @@
 package src.controller;
 
 
-import java.io.PrintWriter;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import framework.Controller;
-
-import src.entity.Market;
 
 
 
