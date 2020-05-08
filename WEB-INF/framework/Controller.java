@@ -43,6 +43,11 @@ public abstract class Controller extends HttpServlet
                     "user",
                     ((UserRepository) getManager(request).getRepository("User")).findOneByLogin(request.getUserPrincipal().getName())
                 );
+            else
+                request.setAttribute(
+                    "urlFrom",
+                    request.getRequestURL() + ((request.getQueryString() != null) ? "?" + request.getQueryString() : "")
+                );
 
             String[] path = request.getServletPath().split("/");
             String action = (path.length == 3 && path[2].length() > 0)
@@ -68,11 +73,11 @@ public abstract class Controller extends HttpServlet
 
     protected void render(String view, HttpServletRequest request, HttpServletResponse response)
     {
-        request.setAttribute("template", "/WEB-INF/src/resources/views/" + view.replace(":", "/") + ".jsp");
+        request.setAttribute("template", "/WEB-INF/src/views/" + view.replace(":", "/") + ".jsp");
 
         try {
             getServletContext()
-                .getRequestDispatcher("/WEB-INF/src/resources/views/base.jsp")
+                .getRequestDispatcher("/WEB-INF/src/views/base.jsp")
                 .forward(request, response);
         } catch(Exception e){
             debug(e, response);

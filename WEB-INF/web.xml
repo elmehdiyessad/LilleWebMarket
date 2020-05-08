@@ -87,7 +87,9 @@
         <url-pattern>/market/create</url-pattern>
         <url-pattern>/market/buy</url-pattern>
         <url-pattern>/market/sell</url-pattern>
-        <url-pattern>/market/delete</url-pattern>
+        <url-pattern>/market/mymarkets</url-pattern>
+        <url-pattern>/market/mystocks</url-pattern>
+        <url-pattern>/market/end</url-pattern>
     </servlet-mapping>
 
 
@@ -112,16 +114,39 @@
             <web-resource-name>login</web-resource-name>
             <url-pattern>/security/login</url-pattern>
         </web-resource-collection>
+
+        <auth-constraint>
+            <role-name>user</role-name>
+            <role-name>maker</role-name>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
         <web-resource-collection>
             <web-resource-name>market</web-resource-name>
-            <url-pattern>/market/create</url-pattern>
             <url-pattern>/market/buy</url-pattern>
             <url-pattern>/market/sell</url-pattern>
-            <url-pattern>/market/delete</url-pattern>
+            <url-pattern>/market/mystocks</url-pattern>
         </web-resource-collection>
 
         <auth-constraint>
             <role-name>user</role-name>
+            <role-name>maker</role-name>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>market</web-resource-name>
+            <url-pattern>/market/mymarkets</url-pattern>
+            <url-pattern>/market/create</url-pattern>
+            <url-pattern>/market/end</url-pattern>
+        </web-resource-collection>
+
+        <auth-constraint>
+            <role-name>maker</role-name>
             <role-name>admin</role-name>
         </auth-constraint>
     </security-constraint>

@@ -23,7 +23,7 @@ INSERT INTO lwm_user (login, password, last_name, first_name)
 	VALUES ('test', MD5('test'), 'Test', 'Test');
 
 INSERT INTO lwm_user (login, password, last_name, first_name)
-	VALUES ('titi', MD5('titi'), 'Titi', 'Titi');
+	VALUES ('toto', MD5('toto'), 'Toto', 'Le Blagueur');
 
 INSERT INTO lwm_user (login, password, last_name, first_name)
 	VALUES ('admin', MD5('admin'), 'Admin', 'Admin');

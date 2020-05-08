@@ -4,6 +4,7 @@ package src.entity;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import framework.Repository;
@@ -22,9 +23,11 @@ public class MarketRepository extends Repository<Market>
         return
             "SELECT *, (" + getVariationQuery() + ") AS variation " +
             "FROM " + getTableName() + " AS m " +
-            "WHERE term > NOW()"
+            "WHERE term > NOW() AND enabled = TRUE "
         ;
     }
+
+
 
     private String getVariationQuery() throws Exception
     {
@@ -32,13 +35,13 @@ public class MarketRepository extends Repository<Market>
             "SELECT (" +
                 "SELECT TRUNC(SUM(price * quantity)/SUM(quantity)) " +
                 "FROM " + getTableName("VariationsMarket") + " AS vm " +
-                "WHERE instant >= (NOW() - INTERVAL '1 hour') " +
+                "WHERE instant >= (NOW() - INTERVAL '1 day') " +
                   "AND m.market_id = vm.market_id " +
             ") - (" +
                 "SELECT TRUNC(SUM(price * quantity)/SUM(quantity)) " +
                 "FROM " + getTableName("VariationsMarket") + " AS vm " +
-                "WHERE instant >= (NOW() - INTERVAL '2 hour') " +
-                  "AND instant < (NOW() - INTERVAL '1 hour') " +
+                "WHERE instant >= (NOW() - INTERVAL '2 days') " +
+                  "AND instant < (NOW() - INTERVAL '1 day') " +
                   "AND m.market_id = vm.market_id " +
             ")";
     }
@@ -55,7 +58,7 @@ public class MarketRepository extends Repository<Market>
     public Market findOneById(int id) throws Exception
     {
         PreparedStatement ps = prepareStatement(
-            "SELECT * " +
+            "SELECT *, (" + getVariationQuery() + ") AS variation " +
             "FROM " + getTableName() + " AS m " +
             "LEFT JOIN " + getTableName("UserStock") + " AS us " +
                 "ON m.market_id = us.market_id " +
@@ -83,6 +86,35 @@ public class MarketRepository extends Repository<Market>
     }
 
 
+    public List<Market> findByMaker(String login) throws Exception
+    {
+        PreparedStatement ps = prepareStatement(
+            "SELECT * " +
+            "FROM " + getTableName() + " " +
+            "WHERE maker = ?"
+        );
+
+        ps.setString(1, login);
+
+        return resultSetToList(ps.executeQuery());
+    }
+
+
+    public List<Market> findByStockholder(String login) throws Exception
+    {
+        PreparedStatement ps = prepareStatement(
+            "SELECT DISTINCT m.* " +
+            "FROM " + getTableName() + " AS m " +
+            "LEFT JOIN " + getTableName("UserStock") + " AS us ON m.market_id = us.market_id " +
+            "WHERE login = ? "
+        );
+
+        ps.setString(1, login);
+
+        return resultSetToList(ps.executeQuery());
+    }
+
+
 
     /**
      * Crée un nouveau marché
@@ -93,7 +125,7 @@ public class MarketRepository extends Repository<Market>
     public Object create(Market m) throws Exception
     {
         PreparedStatement ps = prepareStatement(
-            "INSERT INTO " + getTableName() + " (title, title_rev, term, maker)" +
+            "INSERT INTO " + getTableName() + " (title, title_rev, term, maker) " +
             "VALUES (?, ?, ?, ?) " +
             "RETURNING market_id"
         );
@@ -107,6 +139,27 @@ public class MarketRepository extends Repository<Market>
         rs.next();
 
         return rs.getInt(1);
+    }
+
+
+    /**
+     * Désactive un marché (lorsqu'il est terminé)
+     *
+     * @param m Le marché à créer
+     * @return Id du marché créé
+     */
+    public void disable(Market m) throws Exception
+    {
+        PreparedStatement ps = prepareStatement(
+            "UPDATE " + getTableName() + " " +
+            "SET enabled = FALSE, response = ? " +
+            "WHERE market_id = ?"
+        );
+
+        ps.setBoolean(1, m.getResponse());
+        ps.setInt(2, m.getMarketId());
+
+        ps.execute();
     }
 
 
@@ -132,6 +185,7 @@ public class MarketRepository extends Repository<Market>
 
         return results;
     }
+
 
 
     public void addVariation(int marketId, int price, int quantity) throws Exception

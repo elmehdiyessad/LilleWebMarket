@@ -12,12 +12,14 @@ import framework.Validator;
 
 public class Market extends Entity
 {
-    protected int    marketId;
-    protected String title;
-    protected String titleRev;
-    protected Date   term;
-    protected String maker;
-    protected int    variation;
+    protected int       marketId;
+    protected String    title;
+    protected String    titleRev;
+    protected Date      term;
+    protected String    maker;
+    protected int       variation;
+    protected boolean   enabled;
+    protected boolean   response;
     protected List<UserStock> stocks;
 
 
@@ -83,6 +85,16 @@ public class Market extends Entity
         return this.variation;
     }
 
+    public boolean getEnabled()
+    {
+        return this.enabled;
+    }
+
+    public boolean getResponse()
+    {
+        return this.response;
+    }
+
     public List<UserStock> getStocks()
     {
         return this.stocks;
@@ -116,6 +128,16 @@ public class Market extends Entity
     public void setVariation(Double variation)
     {
         this.variation = variation.intValue();
+    }
+
+    public void setEnabled(Boolean enabled)
+    {
+        this.enabled = enabled;
+    }
+
+    public void setResponse(Boolean response)
+    {
+        this.response = response;
     }
 
     public void setStocks(List<UserStock> stocks)

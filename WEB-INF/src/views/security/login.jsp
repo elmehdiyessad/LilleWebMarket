@@ -3,7 +3,7 @@
 
 
 <ul class="actions">
-    <li><a href="<%= request.getContextPath() %>/security/register">Créer un compte</a></li>
+    <li><a href="${contextPath}/security/register">Créer un compte</a></li>
 </ul>
 
 <div class="box">

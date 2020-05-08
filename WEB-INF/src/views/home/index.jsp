@@ -1,6 +1,11 @@
-﻿<ul class="actions">
-    <li><a href="<%= request.getContextPath() %>">Actualiser</a></li>
-    <li><a href="<%= request.getContextPath() %>/market/create">Ajouter une information</a></li>
+﻿<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+
+
+
+<ul class="actions">
+    <c:if test="${!empty user and user.role == 'maker' or user.role == 'admin'}">
+        <li><a href="${contextPath}/market/create">Créer un marché</a></li>
+    </c:if>
 </ul>
 
 <div class="box">
@@ -11,19 +16,16 @@
                 <th>Echéance</th>
                 <th>Variation</th>
             </thead>
-            <tfoot>
-                <th>Information</th>
-                <th>Echéance</th>
-                <th>Variation</th>
-            </tfoot>
             <tbody>
                 <c:forEach items="${markets}" var="m">
                     <tr>
                         <td>
-                            <a href="<%= request.getContextPath() %>/market/show?id=${m.marketId}">${m.title}</a>
+                            <a href="${contextPath}/market/show?id=${m.marketId}">${m.title}</a>
                         </td>
                         <td class="center">
-                            <time class="endtime">${m.term}</time>
+                            <time class="endtime">
+                                <fmt:formatDate value="${m.term}" pattern="dd MMM yyyy" />
+                            </time>
                         </td>
                         <td class="variation ${m.variation < 0 ? "negative" : "positive"} center">
                             ${m.variation < 0 ? "-" : "+"} ${m:abs(m.variation)} %

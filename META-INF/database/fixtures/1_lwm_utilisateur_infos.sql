@@ -23,7 +23,7 @@ INSERT INTO lwm_user_infos (login, role, cash)
 	VALUES ('test', 'user', 7568);
 
 INSERT INTO lwm_user_infos (login, role, cash)
-	VALUES ('titi', 'user', 9965);
+	VALUES ('toto', 'maker', 9965);
 
 INSERT INTO lwm_user_infos (login, role, cash)
 	VALUES ('admin', 'admin', 200000);

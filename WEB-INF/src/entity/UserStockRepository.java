@@ -21,19 +21,20 @@ public class UserStockRepository extends Repository<UserStock>
      * @param marketId Id du marché concerné
      * @param assertion Défini si on achète pour le marché ou son symétrique
      * @param price Prix maximal du titre
+     * @param login Login de l'utilisateur concerné
      * @return Liste des titres achetables par rapport aux conditions
      */
     public List<UserStock> findPurchasable(int marketId, boolean assertion, int price, String login) throws Exception
     {
         PreparedStatement ps = prepareStatement(
             "SELECT * " +
-            "FROM " + getTableName() + " AS us " +
+            "FROM " + getTableName() + " " +
             "WHERE market_id = ? " +
-              "AND us.login != ? " +
-              "AND us.assertion = ? " +
-              "AND us.price <= ? " +
-              "AND us.nb_stock - us.nb_sold > 0 " +
-            "ORDER BY us.price ASC, us.creation ASC"
+              "AND login != ? " +
+              "AND assertion = ? " +
+              "AND 100 - price <= ? " +
+              "AND nb_stock - nb_sold > 0 " +
+            "ORDER BY price ASC, creation ASC"
         );
 
         ps.setInt(1, marketId);
@@ -42,6 +43,69 @@ public class UserStockRepository extends Repository<UserStock>
         ps.setInt(4, price);
 
         return resultSetToList(ps.executeQuery());
+    }
+
+
+
+    /**
+     * Recherche les titres possédés
+     *
+     * @param marketId Id du marché concerné
+     * @param login Login de l'utilisateur concerné
+     * @return Liste des titres possédés par rapport aux conditions
+     */
+    public Integer countSellable(int marketId, String login) throws Exception
+    {
+        PreparedStatement ps = prepareStatement(
+            "SELECT SUM(nb_sold) AS nbStock " +
+            "FROM " + getTableName() + " " +
+            "WHERE market_id = ? " +
+              "AND login = ? " +
+              "AND buy_or_sell = 'BUY' "
+        );
+
+        ps.setInt(1, marketId);
+        ps.setString(2, login);
+
+        ResultSet rs = ps.executeQuery();
+        rs.next();
+
+        return rs.getInt("nbStock");
+    }
+
+
+
+    /**
+     * Execute les mises à jour du cash de fin de marché
+     *
+     * @param marketId Id du marché concerné
+     * @param assertion Défini si on est pour le marché ou son symétrique
+     */
+    public void endMarket(int marketId, boolean assertion) throws Exception
+    {
+        PreparedStatement ps = prepareStatement(
+            "UPDATE " + getTableName("UserInfos") + " AS ui " +
+            "SET cash = cash + COALESCE(((" +
+                "SELECT SUM(100 * nb_sold) " +
+                "FROM " + getTableName() + " AS us " +
+                "WHERE market_id = ? " +
+                  "AND assertion = ? " +
+                  "AND us.login = ui.login " +
+                  "AND buy_or_sell = 'BUY' " +
+                ") - (" +
+                "SELECT SUM(100 * nb_sold) " +
+                "FROM " + getTableName() + " AS us " +
+                "WHERE market_id = ? " +
+                  "AND assertion = ? " +
+                  "AND us.login = ui.login " +
+                  "AND buy_or_sell = 'SELL' " +
+            ")), 0)"
+        );
+
+        ps.setInt(1, marketId);
+        ps.setBoolean(2, assertion);
+
+        ps.execute();
     }
 
 
@@ -65,6 +129,7 @@ public class UserStockRepository extends Repository<UserStock>
 
         ps.execute();
     }
+
 
 
     /**

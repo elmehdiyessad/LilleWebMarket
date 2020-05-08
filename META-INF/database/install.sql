@@ -55,6 +55,8 @@ CREATE TABLE lwm_market (
     title       TEXT        NOT NULL,
     title_rev   TEXT        NOT NULL,
     term        TIMESTAMP   NOT NULL,
+    response    BOOLEAN,
+    enabled     BOOLEAN     NOT NULL    DEFAULT TRUE,
     maker       TEXT        REFERENCES  lwm_user(login)         ON DELETE CASCADE  ON UPDATE CASCADE
 );
 
