@@ -1,1 +1,1 @@
-salut les gens
+salut la planéte
